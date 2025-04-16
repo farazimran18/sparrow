@@ -1,4 +1,10 @@
 *.log
+*.fst
+*.xml
+*.f
+Bender.lock
 
 .dvt/
 .vscode/
+tb/sim_build/
+tb/__pycache__/

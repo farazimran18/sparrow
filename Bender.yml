@@ -1,0 +1,15 @@
+package:
+  name: yarp
+  authors: ["Faraz Imran <farazimran18@icloud.com>"]
+
+sources:
+  - rtl/yarp_pkg.sv
+  - rtl/yarp_branch_control.sv
+  - rtl/yarp_control.sv
+  - rtl/yarp_data_mem.sv
+  - rtl/yarp_decode.sv
+  - rtl/yarp_execute.sv
+  - rtl/yarp_instr_mem.sv
+  - rtl/yarp_regfile.sv
+  - rtl/yarp_top.sv
+  - tb/tb_yarp_top.sv
