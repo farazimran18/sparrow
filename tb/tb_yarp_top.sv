@@ -30,12 +30,12 @@ module tb_yarp_top #(
     .instr_mem_addr_o    (instr_mem_addr_o   ),
     .instr_mem_rd_data_i (instr_mem_rd_data_i),
 
-    .data_mem_req_o     (data_mem_req_o     ),
-    .data_mem_addr_o    (data_mem_addr_o    ),
-    .data_mem_byte_en_o (data_mem_byte_en_o ),
-    .data_mem_wr_o      (data_mem_wr_o      ),
-    .data_mem_wr_data_o (data_mem_wr_data_o ),
-    .data_mem_rd_data_i (data_mem_rd_data_i )
+    .data_mem_req_o     (data_mem_req_o    ),
+    .data_mem_addr_o    (data_mem_addr_o   ),
+    .data_mem_byte_en_o (data_mem_byte_en_o),
+    .data_mem_wr_o      (data_mem_wr_o     ),
+    .data_mem_wr_data_o (data_mem_wr_data_o),
+    .data_mem_rd_data_i (data_mem_rd_data_i)
   );
 
 endmodule
