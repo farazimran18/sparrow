@@ -3,7 +3,6 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
-# VERILOG_SOURCES = $(shell cat tb_yarp.f)
 VERILOG_SOURCES =
 COMPILE_ARGS += -f tb_yarp.f
 
