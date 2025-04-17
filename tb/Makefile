@@ -1,14 +1,14 @@
 # Makefile
 
-SIM ?= verilator
+SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
+# VERILOG_SOURCES = $(shell cat tb_yarp.f)
 VERILOG_SOURCES =
-EXTRA_ARGS += -f tb_yarp.f
+COMPILE_ARGS += -f tb_yarp.f
 
 # enable waveform dumping
-EXTRA_ARGS += --trace -trace-fst --trace-structs
-PLUS_ARGS += --trace -trace-fst --trace-structs
+WAVES = 1
 
 # TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
 TOPLEVEL = tb_yarp_top
