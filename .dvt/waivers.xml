@@ -24,4 +24,19 @@
 	<waiver name="FEEDTHROUGH_DETECTED" severity="DISABLED">
 		<match path="/home/faraz/hardware/yarp/rtl/yarp_instr_mem.sv" message="FEEDTHROUGH_DETECTED: Feedthrough from 'mem_rd_data_i' to 'instr_mem_instr_o'"/>
 	</waiver>
+	<waiver name="FEEDTHROUGH_DETECTED" severity="DISABLED">
+		<match path="/home/faraz/hardware/yarp/rtl/yarp_decode.sv" message="FEEDTHROUGH_DETECTED: Feedthrough from 'instr_i' to 'rs1_o'"/>
+	</waiver>
+	<waiver name="FEEDTHROUGH_DETECTED" severity="DISABLED">
+		<match path="/home/faraz/hardware/yarp/rtl/yarp_decode.sv" message="FEEDTHROUGH_DETECTED: Feedthrough from 'instr_i' to 'rs2_o'"/>
+	</waiver>
+	<waiver name="FEEDTHROUGH_DETECTED" severity="DISABLED">
+		<match path="/home/faraz/hardware/yarp/rtl/yarp_decode.sv" message="FEEDTHROUGH_DETECTED: Feedthrough from 'instr_i' to 'rd_o'"/>
+	</waiver>
+	<waiver name="FEEDTHROUGH_DETECTED" severity="DISABLED">
+		<match path="/home/faraz/hardware/yarp/rtl/yarp_decode.sv" message="FEEDTHROUGH_DETECTED: Feedthrough from 'instr_i' to 'funct3_o'"/>
+	</waiver>
+	<waiver name="FEEDTHROUGH_DETECTED" severity="DISABLED">
+		<match path="/home/faraz/hardware/yarp/rtl/yarp_decode.sv" message="FEEDTHROUGH_DETECTED: Feedthrough from 'instr_i' to 'funct7_o'"/>
+	</waiver>
 </waivers>
