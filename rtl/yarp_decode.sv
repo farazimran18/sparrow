@@ -41,7 +41,6 @@ module yarp_decode (
     unique case (opcode)
       R_TYPE: begin
         r_type_instr_o = '1;
-        instr_imm_o    = '0;
       end
       I_TYPE_0, I_TYPE_1, I_TYPE_2: begin
         i_type_instr_o = '1;
