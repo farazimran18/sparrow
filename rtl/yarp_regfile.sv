@@ -1,43 +1,43 @@
 import yarp_pkg::*;
 
+// 2 read ports, 1 write port
 module yarp_regfile (
     input logic clk,
     input logic reset_n,
 
-    // Source registers
-    input logic [4:0] rs1_addr_i,
-    input logic [4:0] rs2_addr_i,
+    input  logic [4:0]      rs1_addr_i,
+    output logic [XLEN-1:0] rs1_data_o,
 
-    // Destination register
-    input logic [4:0]  rd_addr_i,
-    input logic        wr_en_i,
-    input logic [31:0] wr_data_i,
+    input  logic [4:0]      rs2_addr_i,
+    output logic [XLEN-1:0] rs2_data_o,
 
-    // Register Data
-    output logic [31:0] rs1_data_o,
-    output logic [31:0] rs2_data_o
+    input logic [4:0]      rd_addr_i,
+    input logic            wr_en_i,
+    input logic [XLEN-1:0] wr_data_i
   );
 
-  // --------------------------------------------------------
-  // Implement register file as an 2D array
-  // Register file should:
-  // - Contain the 32 architectural registers
-  // - Each register should be 32-bit wide
-  // - Register X0 should always return 0
-  // --------------------------------------------------------
-  logic [31:0] [31:0] regfile;
+  logic [31:0] [XLEN-1:0] regfile_d, regfile_q;
+  logic [31:0]            regfile_en;
 
-  // --------------------------------------------------------
-  // Add your logic here
-  // --------------------------------------------------------
+  generate
+    for (genvar i = 0; i < 32; i++) begin: g_registers
 
-  // Write to the register file should use the `rd_addr_i`
-  // signal for the register file address and the `wr_en_i`
-  // signal as the enable. Remember register X0 should be
-  // hardwired to 0.
+      always_ff @(posedge clk or negedge reset_n) begin
+        if (!reset_n) begin
+          regfile_q[i] <= '0;
+        end else begin
+          regfile_q[i] <= regfile_d[i];
+        end
+      end
 
-  // Read data should be returned on the same cycle
-  // The `rs1_addr_i` and `rs2_addr_i` are the read addresses
-  // for the two source registers respectively.
+      // register X0 is not writable
+      assign regfile_en[i] = (i == '0) ? '0 : (wr_en_i & (i == rd_addr_i));
+      assign regfile_d[i]  = regfile_en[i] ? wr_data_i : regfile_q[i];
+
+    end
+  endgenerate
+
+  assign rs1_data_o = regfile_q[rs1_addr_i];
+  assign rs2_data_o = regfile_q[rs2_addr_i];
 
 endmodule
