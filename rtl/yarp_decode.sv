@@ -1,6 +1,5 @@
-import yarp_pkg::*;
-
-module yarp_decode (
+module yarp_decode
+  import yarp_pkg::*; (
     input logic [XLEN-1:0] instr_i,
 
     output logic [4:0]  rs1_o,

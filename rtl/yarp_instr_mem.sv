@@ -1,6 +1,5 @@
-import yarp_pkg::*;
-
-module yarp_instr_mem (
+module yarp_instr_mem
+  import yarp_pkg::*; (
     input logic clk,
     input logic reset_n,
 

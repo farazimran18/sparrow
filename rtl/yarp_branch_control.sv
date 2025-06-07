@@ -1,6 +1,5 @@
-import yarp_pkg::*;
-
-module yarp_branch_control (
+module yarp_branch_control
+  import yarp_pkg::*; (
     // Source operands
     input logic [31:0] opr_a_i,
     input logic [31:0] opr_b_i,

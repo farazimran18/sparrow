@@ -1,7 +1,6 @@
-import yarp_pkg::*;
-
 // 2 read ports, 1 write port
-module yarp_regfile (
+module yarp_regfile
+  import yarp_pkg::*; (
     input logic clk,
     input logic reset_n,
 

@@ -1,6 +1,5 @@
-import yarp_pkg::*;
-
-module yarp_control (
+module yarp_control
+  import yarp_pkg::*; (
     // Instruction type
     input logic is_r_type_i,
     input logic is_i_type_i,

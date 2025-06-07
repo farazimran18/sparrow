@@ -3,7 +3,7 @@ package:
   authors: ["Faraz Imran <farazimran18@icloud.com>"]
 
 sources:
-  - include/yarp_pkg.sv
+  - rtl/yarp_pkg.sv
   - rtl/yarp_branch_control.sv
   - rtl/yarp_control.sv
   - rtl/yarp_data_mem.sv

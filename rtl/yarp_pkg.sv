@@ -14,4 +14,17 @@ package yarp_pkg;
     J_TYPE   = 7'h6F
   } riscv_op_e;
 
+  typedef enum logic[3:0] {
+    OP_ADD,
+    OP_SUB,
+    OP_SLL,
+    OP_SRL,
+    OP_SRA,
+    OP_OR,
+    OP_AND,
+    OP_XOR,
+    OP_SLTU,
+    OP_SLT
+  } alu_op_e;
+
 endpackage
