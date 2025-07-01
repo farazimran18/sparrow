@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+To run sim
 
 make clean
 make filelist

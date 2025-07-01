@@ -1,6 +1,5 @@
-import yarp_pkg::*;
-
-module tb_yarp_top #(
+module tb_yarp_top
+  import yarp_pkg::*; #(
     parameter RESET_PC = 32'h1000
   ) (
     input logic clk,
