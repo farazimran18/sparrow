@@ -5,18 +5,18 @@ module yarp_regfile
     input logic clk,
     input logic reset_n,
 
-    input  logic [     4:0] rs1_addr_i,
-    output logic [XLEN-1:0] rs1_data_o,
+    input  logic [ 4:0] rs1_addr_i,
+    output logic [31:0] rs1_data_o,
 
-    input  logic [     4:0] rs2_addr_i,
-    output logic [XLEN-1:0] rs2_data_o,
+    input  logic [ 4:0] rs2_addr_i,
+    output logic [31:0] rs2_data_o,
 
-    input logic [     4:0] rd_addr_i,
-    input logic            wr_en_i,
-    input logic [XLEN-1:0] wr_data_i
+    input logic [ 4:0] rd_addr_i,
+    input logic        wr_en_i,
+    input logic [31:0] wr_data_i
 );
 
-  logic [31:0][XLEN-1:0] regfile_d, regfile_q;
+  logic [31:0][31:0] regfile_d, regfile_q;
   logic [31:0] regfile_en;
 
   generate

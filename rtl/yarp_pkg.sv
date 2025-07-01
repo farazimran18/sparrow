@@ -1,7 +1,5 @@
 package yarp_pkg;
 
-  localparam int XLEN = 32;
-
   typedef enum logic [6:0] {
     R_TYPE   = 7'h33,
     I_TYPE_0 = 7'h03,
