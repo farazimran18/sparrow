@@ -1,12 +1,13 @@
 module yarp_execute
-  import yarp_pkg::*; (
+  import yarp_pkg::*;
+(
     input logic [XLEN-1:0] opr_a_i,
     input logic [XLEN-1:0] opr_b_i,
 
     input logic [3:0] op_sel_i,
 
     output logic [XLEN-1:0] alu_res_o
-  );
+);
 
   alu_op_e alu_op;
   assign alu_op = alu_op_e'(op_sel_i);

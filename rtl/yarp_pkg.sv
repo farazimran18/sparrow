@@ -14,7 +14,7 @@ package yarp_pkg;
     J_TYPE   = 7'h6F
   } riscv_op_e;
 
-  typedef enum logic[3:0] {
+  typedef enum logic [3:0] {
     OP_ADD,
     OP_SUB,
     OP_SLL,

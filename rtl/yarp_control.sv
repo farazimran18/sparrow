@@ -1,5 +1,6 @@
 module yarp_control
-  import yarp_pkg::*; (
+  import yarp_pkg::*;
+(
     // Instruction type
     input logic is_r_type_i,
     input logic is_i_type_i,
@@ -24,7 +25,7 @@ module yarp_control
     output logic       data_wr_o,
     output logic       zero_extnd_o,
     output logic       rf_wr_en_o
-  );
+);
 
   // Write your logic here...
 

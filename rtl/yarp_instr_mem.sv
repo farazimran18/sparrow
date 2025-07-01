@@ -1,5 +1,6 @@
 module yarp_instr_mem
-  import yarp_pkg::*; (
+  import yarp_pkg::*;
+(
     input logic clk,
     input logic reset_n,
 
@@ -10,7 +11,7 @@ module yarp_instr_mem
     input  logic [XLEN-1:0] mem_rd_data_i,
 
     output logic [XLEN-1:0] instr_mem_instr_o
-  );
+);
 
   always_ff @(posedge clk or negedge reset_n) begin
     if (!reset_n) begin

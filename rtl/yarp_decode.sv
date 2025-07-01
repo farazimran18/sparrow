@@ -1,13 +1,14 @@
 module yarp_decode
-  import yarp_pkg::*; (
+  import yarp_pkg::*;
+(
     input logic [XLEN-1:0] instr_i,
 
-    output logic [4:0]  rs1_o,
-    output logic [4:0]  rs2_o,
-    output logic [4:0]  rd_o,
-    output logic [6:0]  op_o,
-    output logic [2:0]  funct3_o,
-    output logic [6:0]  funct7_o,
+    output logic [ 4:0] rs1_o,
+    output logic [ 4:0] rs2_o,
+    output logic [ 4:0] rd_o,
+    output logic [ 6:0] op_o,
+    output logic [ 2:0] funct3_o,
+    output logic [ 6:0] funct7_o,
     output logic [31:0] instr_imm_o,
 
     output logic r_type_instr_o,
@@ -16,10 +17,10 @@ module yarp_decode
     output logic b_type_instr_o,
     output logic u_type_instr_o,
     output logic j_type_instr_o
-  );
+);
 
   riscv_op_e opcode;
-  assign opcode = riscv_op_e'(instr_i[6:0]);
+  assign opcode   = riscv_op_e'(instr_i[6:0]);
 
   assign rs1_o    = instr_i[19:15];
   assign rs2_o    = instr_i[24:20];

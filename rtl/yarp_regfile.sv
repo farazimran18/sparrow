@@ -1,25 +1,26 @@
 // 2 read ports, 1 write port
 module yarp_regfile
-  import yarp_pkg::*; (
+  import yarp_pkg::*;
+(
     input logic clk,
     input logic reset_n,
 
-    input  logic [4:0]      rs1_addr_i,
+    input  logic [     4:0] rs1_addr_i,
     output logic [XLEN-1:0] rs1_data_o,
 
-    input  logic [4:0]      rs2_addr_i,
+    input  logic [     4:0] rs2_addr_i,
     output logic [XLEN-1:0] rs2_data_o,
 
-    input logic [4:0]      rd_addr_i,
+    input logic [     4:0] rd_addr_i,
     input logic            wr_en_i,
     input logic [XLEN-1:0] wr_data_i
-  );
+);
 
-  logic [31:0] [XLEN-1:0] regfile_d, regfile_q;
-  logic [31:0]            regfile_en;
+  logic [31:0][XLEN-1:0] regfile_d, regfile_q;
+  logic [31:0] regfile_en;
 
   generate
-    for (genvar i = 0; i < 32; i++) begin: g_registers
+    for (genvar i = 0; i < 32; i++) begin : g_registers
 
       always_ff @(posedge clk or negedge reset_n) begin
         if (!reset_n) begin
