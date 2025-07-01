@@ -1,4 +1,5 @@
 .vscode/
+.venv/
 
 .dvt/default.build.auto.1
 .dvt/.build_config_dict
