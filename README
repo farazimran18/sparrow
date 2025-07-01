@@ -2,3 +2,6 @@ From Quicksilicon's RISCV course
 
 To format code:
 ./meta/format.sh
+
+To run lint:
+./meta/lint.sh
