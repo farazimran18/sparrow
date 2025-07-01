@@ -10,28 +10,24 @@
 --wrap_spaces=4
 
 # Verilog Specific Formatting Style
---assignment_statement_alignment=infer
---case_items_alignment=infer
---class_member_variable_alignment=infer
+--assignment_statement_alignment=align
+--case_items_alignment=align
+--class_member_variable_alignment=align
 --compact_indexing_and_selections=true
---distribution_items_alignment=infer
---enum_assignment_statement_alignment=infer
+--distribution_items_alignment=align
+--enum_assignment_statement_alignment=align
 --expand_coverpoints=false
---formal_parameters_alignment=infer
+--formal_parameters_alignment=align
 --formal_parameters_indentation=wrap
---module_net_variable_alignment=infer
---named_parameter_alignment=infer
+--module_net_variable_alignment=align
+--named_parameter_alignment=align
 --named_parameter_indentation=wrap
---named_port_alignment=infer
+--named_port_alignment=align
 --named_port_indentation=wrap
---port_declarations_alignment=infer
+--port_declarations_alignment=align
 --port_declarations_indentation=wrap
 --port_declarations_right_align_packed_dimensions=false
 --port_declarations_right_align_unpacked_dimensions=false
---struct_union_members_alignment=infer
+--struct_union_members_alignment=align
 --try_wrap_long_lines=false
 --wrap_end_else_clauses=false
-
-# Formatter Tool Behavior
---failsafe_success=true
---verify_convergence=true
