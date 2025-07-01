@@ -11,8 +11,8 @@ SCRIPT_DIR=${0:h}
 PROJECT_ROOT="$SCRIPT_DIR/.."
 
 # --- Main Logic ---
-echo "🔍 Finding and formatting Verilog files..."
+echo "Finding and formatting Verilog files..."
 
 find "$PROJECT_ROOT/rtl" "$PROJECT_ROOT/tb" -name "*.v" -o -name "*.sv" | xargs verible-verilog-format --flagfile "$SCRIPT_DIR/.verible-verilog-format" --inplace
 
-echo "✅ Formatting complete."
+echo "Formatting complete."
