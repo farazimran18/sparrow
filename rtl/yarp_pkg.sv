@@ -25,4 +25,10 @@ package yarp_pkg;
     OP_SLT
   } alu_op_e;
 
+  typedef enum logic [1:0] {
+    BYTE      = 2'b00,
+    HALF_WORD = 2'b01,
+    WORD      = 2'b11
+  } mem_access_size_e;
+
 endpackage
