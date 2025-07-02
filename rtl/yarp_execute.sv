@@ -4,13 +4,10 @@ module yarp_execute
     input logic [31:0] opr_a_i,
     input logic [31:0] opr_b_i,
 
-    input logic [3:0] op_sel_i,
+    input alu_op_e op_sel_i,
 
     output logic [31:0] alu_res_o
 );
-
-  alu_op_e alu_op;
-  assign alu_op = alu_op_e'(op_sel_i);
 
   logic [31:0] twos_compl_a, twos_compl_b;
 
@@ -18,7 +15,7 @@ module yarp_execute
   assign twos_compl_b = opr_b_i[31] ? (~opr_b_i + 32'h1) : opr_b_i;
 
   always_comb begin
-    unique case (alu_op)
+    unique case (op_sel_i)
       OP_ADD:  alu_res_o = opr_a_i + opr_b_i;
       OP_SUB:  alu_res_o = opr_a_i - opr_b_i;
       OP_SLL:  alu_res_o = opr_a_i << opr_b_i[4:0];

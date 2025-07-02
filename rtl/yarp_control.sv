@@ -15,16 +15,7 @@ module yarp_control
     input logic [6:0] instr_opcode_i,
 
     // Control signals
-    output logic       pc_sel_o,
-    output logic       op1sel_o,
-    output logic       op2sel_o,
-    output logic [3:0] alu_func_o,
-    output logic [1:0] rf_wr_data_o,
-    output logic       data_req_o,
-    output logic [1:0] data_byte_o,
-    output logic       data_wr_o,
-    output logic       zero_extnd_o,
-    output logic       rf_wr_en_o
+    output control_t controls_o
 );
 
   // Internal signals
@@ -37,7 +28,6 @@ module yarp_control
   control_t b_type_controls;
   control_t u_type_controls;
   control_t j_type_controls;
-  control_t controls;
 
   // R-type
   assign instr_funct = r_type_e'({instr_funct7_bit5_i, instr_funct3_i});
@@ -66,42 +56,45 @@ module yarp_control
     i_type_controls.rf_wr_en = 1'b1;
     i_type_controls.op2_sel  = 1'b1;
     case (instr_opc)
-      ADDI: i_type_controls.alu_funct_sel = OP_ADD;
-      ANDI: i_type_controls.alu_funct_sel = OP_AND;
-      ORI: i_type_controls.alu_funct_sel = OP_OR;
-      SLLI: i_type_controls.alu_funct_sel = OP_SLL;
-      SRXI: i_type_controls.alu_funct_sel = instr_funct7_bit5_i ? OP_SRA : OP_SRL;
-      SLTI: i_type_controls.alu_funct_sel = OP_SLT;
-      SLTIU: i_type_controls.alu_funct_sel = OP_SLTU;
-      XORI: i_type_controls.alu_funct_sel = OP_XOR;
-      LB:
-      {i_type_controls.data_req, i_type_controls.data_byte, i_type_controls.rf_wr_data_sel} = {
-        1'b1, BYTE, MEM
-      };
-      LH:
-      {i_type_controls.data_req, i_type_controls.data_byte, i_type_controls.rf_wr_data_sel} = {
-        1'b1, HALF_WORD, MEM
-      };
-      LW:
-      {i_type_controls.data_req, i_type_controls.data_byte, i_type_controls.rf_wr_data_sel} = {
-        1'b1, WORD, MEM
-      };
-      LBU:
-      {i_type_controls.data_req,
-                      i_type_controls.data_byte,
-                      i_type_controls.rf_wr_data_sel,
-                      i_type_controls.zero_extnd}     = {
-        1'b1, BYTE, MEM, 1'b1
-      };
-      LHU:
-      {i_type_controls.data_req,
-                      i_type_controls.data_byte,
-                      i_type_controls.rf_wr_data_sel,
-                      i_type_controls.zero_extnd}     = {
-        1'b1, HALF_WORD, MEM, 1'b1
-      };
+      ADDI:    i_type_controls.alu_funct_sel = OP_ADD;
+      ANDI:    i_type_controls.alu_funct_sel = OP_AND;
+      ORI:     i_type_controls.alu_funct_sel = OP_OR;
+      SLLI:    i_type_controls.alu_funct_sel = OP_SLL;
+      SRXI:    i_type_controls.alu_funct_sel = instr_funct7_bit5_i ? OP_SRA : OP_SRL;
+      SLTI:    i_type_controls.alu_funct_sel = OP_SLT;
+      SLTIU:   i_type_controls.alu_funct_sel = OP_SLTU;
+      XORI:    i_type_controls.alu_funct_sel = OP_XOR;
+      LB: begin
+        i_type_controls.data_req       = 1'b1;
+        i_type_controls.data_byte      = BYTE;
+        i_type_controls.rf_wr_data_sel = MEM;
+      end
+      LH: begin
+        i_type_controls.data_req       = 1'b1;
+        i_type_controls.data_byte      = HALF_WORD;
+        i_type_controls.rf_wr_data_sel = MEM;
+      end
+      LW: begin
+        i_type_controls.data_req       = 1'b1;
+        i_type_controls.data_byte      = WORD;
+        i_type_controls.rf_wr_data_sel = MEM;
+      end
+      LBU: begin
+        i_type_controls.data_req       = 1'b1;
+        i_type_controls.data_byte      = BYTE;
+        i_type_controls.rf_wr_data_sel = MEM;
+        i_type_controls.zero_extnd     = 1'b1;
+
+      end
+      LHU: begin
+        i_type_controls.data_req       = 1'b1;
+        i_type_controls.data_byte      = HALF_WORD;
+        i_type_controls.rf_wr_data_sel = MEM;
+        i_type_controls.zero_extnd     = 1'b1;
+      end
       default: i_type_controls = '0;
     endcase
+
     // JALR
     if ((instr_opcode_i == I_TYPE_2)) begin
       i_type_controls.rf_wr_data_sel = PC;
@@ -156,25 +149,14 @@ module yarp_control
   // Output assignments
   always_comb begin
     unique case (1'b1)
-      is_r_type_i: controls = r_type_controls;
-      is_i_type_i: controls = i_type_controls;
-      is_s_type_i: controls = s_type_controls;
-      is_b_type_i: controls = b_type_controls;
-      is_u_type_i: controls = u_type_controls;
-      is_j_type_i: controls = j_type_controls;
-      default:     controls = '0;
+      is_r_type_i: controls_o = r_type_controls;
+      is_i_type_i: controls_o = i_type_controls;
+      is_s_type_i: controls_o = s_type_controls;
+      is_b_type_i: controls_o = b_type_controls;
+      is_u_type_i: controls_o = u_type_controls;
+      is_j_type_i: controls_o = j_type_controls;
+      default:     controls_o = '0;
     endcase
   end
-
-  assign pc_sel_o     = controls.pc_sel;
-  assign op1sel_o     = controls.op1_sel;
-  assign op2sel_o     = controls.op2_sel;
-  assign alu_func_o   = controls.alu_funct_sel;
-  assign rf_wr_en_o   = controls.rf_wr_en;
-  assign data_req_o   = controls.data_req;
-  assign data_byte_o  = controls.data_byte;
-  assign data_wr_o    = controls.data_wr;
-  assign zero_extnd_o = controls.zero_extnd;
-  assign rf_wr_data_o = controls.rf_wr_data_sel;
 
 endmodule

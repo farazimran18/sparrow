@@ -1,16 +1,13 @@
 module yarp_data_mem
   import yarp_pkg::*;
 (
-    input logic clk,
-    input logic reset_n,
-
     // Data request from current instruction
-    input  logic        data_req_i,
-    input  logic [31:0] data_addr_i,
-    input  logic [ 1:0] data_byte_en_i,
-    input  logic        data_wr_i,
-    input  logic [31:0] data_wr_data_i,
-    output logic [31:0] data_mem_rd_data_o, // Data output
+    input  logic                    data_req_i,
+    input  logic             [31:0] data_addr_i,
+    input  mem_access_size_e        data_byte_en_i,
+    input  logic                    data_wr_i,
+    input  logic             [31:0] data_wr_data_i,
+    output logic             [31:0] data_mem_rd_data_o, // Data output
 
     input logic data_zero_extnd_i,
 
@@ -29,11 +26,8 @@ module yarp_data_mem
   assign data_mem_wr_o      = data_wr_i;
   assign data_mem_wr_data_o = data_wr_data_i;
 
-  mem_access_size_e access_size;
-  assign access_size = mem_access_size_e'(data_byte_en_i);
-
   always_comb begin
-    unique case (access_size)
+    unique case (data_byte_en_i)
       BYTE: begin
         data_mem_rd_data_o = data_zero_extnd_i ?
                              {24'h0, mem_rd_data_i[7:0]} :
