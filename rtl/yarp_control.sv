@@ -27,6 +27,154 @@ module yarp_control
     output logic       rf_wr_en_o
 );
 
-  // Write your logic here...
+  // Internal signals
+  r_type_e  instr_funct;
+  i_type_e  instr_opc;
+
+  control_t r_type_controls;
+  control_t i_type_controls;
+  control_t s_type_controls;
+  control_t b_type_controls;
+  control_t u_type_controls;
+  control_t j_type_controls;
+  control_t controls;
+
+  // R-type
+  assign instr_funct = r_type_e'({instr_funct7_bit5_i, instr_funct3_i});
+  always_comb begin
+    r_type_controls          = '0;
+    r_type_controls.rf_wr_en = 1'b1;
+    case (instr_funct)
+      ADD:     r_type_controls.alu_funct_sel = OP_ADD;
+      AND:     r_type_controls.alu_funct_sel = OP_AND;
+      OR:      r_type_controls.alu_funct_sel = OP_OR;
+      SLL:     r_type_controls.alu_funct_sel = OP_SLL;
+      SLT:     r_type_controls.alu_funct_sel = OP_SLT;
+      SLTU:    r_type_controls.alu_funct_sel = OP_SLTU;
+      SRA:     r_type_controls.alu_funct_sel = OP_SRA;
+      SRL:     r_type_controls.alu_funct_sel = OP_SRL;
+      SUB:     r_type_controls.alu_funct_sel = OP_SUB;
+      XOR:     r_type_controls.alu_funct_sel = OP_XOR;
+      default: r_type_controls.alu_funct_sel = OP_ADD;
+    endcase
+  end
+
+  // I-type
+  assign instr_opc = i_type_e'({instr_opcode_i[4], instr_funct3_i});
+  always_comb begin
+    i_type_controls          = '0;
+    i_type_controls.rf_wr_en = 1'b1;
+    i_type_controls.op2_sel  = 1'b1;
+    case (instr_opc)
+      ADDI: i_type_controls.alu_funct_sel = OP_ADD;
+      ANDI: i_type_controls.alu_funct_sel = OP_AND;
+      ORI: i_type_controls.alu_funct_sel = OP_OR;
+      SLLI: i_type_controls.alu_funct_sel = OP_SLL;
+      SRXI: i_type_controls.alu_funct_sel = instr_funct7_bit5_i ? OP_SRA : OP_SRL;
+      SLTI: i_type_controls.alu_funct_sel = OP_SLT;
+      SLTIU: i_type_controls.alu_funct_sel = OP_SLTU;
+      XORI: i_type_controls.alu_funct_sel = OP_XOR;
+      LB:
+      {i_type_controls.data_req, i_type_controls.data_byte, i_type_controls.rf_wr_data_sel} = {
+        1'b1, BYTE, MEM
+      };
+      LH:
+      {i_type_controls.data_req, i_type_controls.data_byte, i_type_controls.rf_wr_data_sel} = {
+        1'b1, HALF_WORD, MEM
+      };
+      LW:
+      {i_type_controls.data_req, i_type_controls.data_byte, i_type_controls.rf_wr_data_sel} = {
+        1'b1, WORD, MEM
+      };
+      LBU:
+      {i_type_controls.data_req,
+                      i_type_controls.data_byte,
+                      i_type_controls.rf_wr_data_sel,
+                      i_type_controls.zero_extnd}     = {
+        1'b1, BYTE, MEM, 1'b1
+      };
+      LHU:
+      {i_type_controls.data_req,
+                      i_type_controls.data_byte,
+                      i_type_controls.rf_wr_data_sel,
+                      i_type_controls.zero_extnd}     = {
+        1'b1, HALF_WORD, MEM, 1'b1
+      };
+      default: i_type_controls = '0;
+    endcase
+    // JALR
+    if ((instr_opcode_i == I_TYPE_2)) begin
+      i_type_controls.rf_wr_data_sel = PC;
+      i_type_controls.pc_sel         = 1'b1;
+      i_type_controls.alu_funct_sel  = OP_ADD;
+    end
+  end
+
+  // S-type
+  always_comb begin
+    s_type_controls          = '0;
+    s_type_controls.data_req = 1'b1;
+    s_type_controls.data_wr  = 1'b1;
+    s_type_controls.op2_sel  = 1'b1;
+    case (instr_funct3_i)
+      SB:      s_type_controls.data_byte = BYTE;
+      SH:      s_type_controls.data_byte = HALF_WORD;
+      SW:      s_type_controls.data_byte = WORD;
+      default: s_type_controls = '0;
+    endcase
+  end
+
+  // B-type
+  always_comb begin
+    b_type_controls               = '0;
+    b_type_controls.alu_funct_sel = OP_ADD;
+    b_type_controls.op1_sel       = 1'b1;
+    b_type_controls.op2_sel       = 1'b1;
+  end
+
+  // U-type
+  always_comb begin
+    u_type_controls          = '0;
+    u_type_controls.rf_wr_en = 1'b1;
+    case (instr_opcode_i)
+      AUIPC:   {u_type_controls.op2_sel, u_type_controls.op1_sel} = {1'b1, 1'b1};
+      LUI:     u_type_controls.rf_wr_data_sel = IMM;
+      default: u_type_controls = '0;
+    endcase
+  end
+
+  // J-type
+  always_comb begin
+    j_type_controls                = '0;
+    j_type_controls.rf_wr_en       = 1'b1;
+    j_type_controls.rf_wr_data_sel = PC;
+    j_type_controls.op2_sel        = 1'b1;
+    j_type_controls.op1_sel        = 1'b1;
+    j_type_controls.pc_sel         = 1'b1;
+  end
+
+  // Output assignments
+  always_comb begin
+    unique case (1'b1)
+      is_r_type_i: controls = r_type_controls;
+      is_i_type_i: controls = i_type_controls;
+      is_s_type_i: controls = s_type_controls;
+      is_b_type_i: controls = b_type_controls;
+      is_u_type_i: controls = u_type_controls;
+      is_j_type_i: controls = j_type_controls;
+      default:     controls = '0;
+    endcase
+  end
+
+  assign pc_sel_o     = controls.pc_sel;
+  assign op1sel_o     = controls.op1_sel;
+  assign op2sel_o     = controls.op2_sel;
+  assign alu_func_o   = controls.alu_funct_sel;
+  assign rf_wr_en_o   = controls.rf_wr_en;
+  assign data_req_o   = controls.data_req;
+  assign data_byte_o  = controls.data_byte;
+  assign data_wr_o    = controls.data_wr;
+  assign zero_extnd_o = controls.zero_extnd;
+  assign rf_wr_data_o = controls.rf_wr_data_sel;
 
 endmodule
