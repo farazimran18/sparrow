@@ -12,3 +12,4 @@ echo "\n4. Running Verible lint..."
 cat filelist.f | xargs verible-verilog-lint
 
 rm filelist.f
+rm Bender.lock

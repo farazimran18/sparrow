@@ -27,3 +27,4 @@ clean::
 	$(RM) -r __pycache__
 	$(RM) results.xml
 	$(RM) tb_yarp.f
+	$(RM) ../Bender.lock
