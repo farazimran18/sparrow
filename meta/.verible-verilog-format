@@ -1,5 +1,4 @@
 # Verible Verilog Format Configuration
-# Default values are used for all settings.
 
 # Basic Formatting Style
 --column_limit=100
