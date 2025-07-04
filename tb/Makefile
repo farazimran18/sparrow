@@ -28,3 +28,5 @@ clean::
 	$(RM) results.xml
 	$(RM) ../Bender.lock
 	$(RM) ../*.log
+	$(RM) ../.dvt/*.xml
+	$(RM) -rf ../.dvt/.build_config_dict
