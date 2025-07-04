@@ -3,11 +3,11 @@
 
 .dvt/default.build.auto.1
 .dvt/.build_config_dict
+.dvt/*.xml
 
 dvt_build.log
 
 tb/results.xml
-tb/tb_yarp.f
 tb/sim_build/
 tb/__pycache__/
 

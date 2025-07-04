@@ -1,6 +1,6 @@
 module yarp_control
   import yarp_pkg::*;
-(
+  (
     // Instruction type
     input logic is_r_type_i,
     input logic is_i_type_i,
@@ -16,11 +16,11 @@ module yarp_control
 
     // Control signals
     output control_t controls_o
-);
+  );
 
   // Internal signals
-  r_type_e  instr_funct;
-  i_type_e  instr_opc;
+  r_type_e instr_funct;
+  i_type_e instr_opc;
 
   control_t r_type_controls;
   control_t i_type_controls;
@@ -35,16 +35,16 @@ module yarp_control
     r_type_controls          = '0;
     r_type_controls.rf_wr_en = 1'b1;
     case (instr_funct)
-      ADD:     r_type_controls.alu_funct_sel = OP_ADD;
-      AND:     r_type_controls.alu_funct_sel = OP_AND;
-      OR:      r_type_controls.alu_funct_sel = OP_OR;
-      SLL:     r_type_controls.alu_funct_sel = OP_SLL;
-      SLT:     r_type_controls.alu_funct_sel = OP_SLT;
-      SLTU:    r_type_controls.alu_funct_sel = OP_SLTU;
-      SRA:     r_type_controls.alu_funct_sel = OP_SRA;
-      SRL:     r_type_controls.alu_funct_sel = OP_SRL;
-      SUB:     r_type_controls.alu_funct_sel = OP_SUB;
-      XOR:     r_type_controls.alu_funct_sel = OP_XOR;
+      ADD    : r_type_controls.alu_funct_sel = OP_ADD;
+      AND    : r_type_controls.alu_funct_sel = OP_AND;
+      OR     : r_type_controls.alu_funct_sel = OP_OR;
+      SLL    : r_type_controls.alu_funct_sel = OP_SLL;
+      SLT    : r_type_controls.alu_funct_sel = OP_SLT;
+      SLTU   : r_type_controls.alu_funct_sel = OP_SLTU;
+      SRA    : r_type_controls.alu_funct_sel = OP_SRA;
+      SRL    : r_type_controls.alu_funct_sel = OP_SRL;
+      SUB    : r_type_controls.alu_funct_sel = OP_SUB;
+      XOR    : r_type_controls.alu_funct_sel = OP_XOR;
       default: r_type_controls.alu_funct_sel = OP_ADD;
     endcase
   end
@@ -56,14 +56,15 @@ module yarp_control
     i_type_controls.rf_wr_en = 1'b1;
     i_type_controls.op2_sel  = 1'b1;
     case (instr_opc)
-      ADDI:    i_type_controls.alu_funct_sel = OP_ADD;
-      ANDI:    i_type_controls.alu_funct_sel = OP_AND;
-      ORI:     i_type_controls.alu_funct_sel = OP_OR;
-      SLLI:    i_type_controls.alu_funct_sel = OP_SLL;
-      SRXI:    i_type_controls.alu_funct_sel = instr_funct7_bit5_i ? OP_SRA : OP_SRL;
-      SLTI:    i_type_controls.alu_funct_sel = OP_SLT;
-      SLTIU:   i_type_controls.alu_funct_sel = OP_SLTU;
-      XORI:    i_type_controls.alu_funct_sel = OP_XOR;
+      ADDI : i_type_controls.alu_funct_sel = OP_ADD;
+      ANDI : i_type_controls.alu_funct_sel = OP_AND;
+      ORI  : i_type_controls.alu_funct_sel = OP_OR;
+      SLLI : i_type_controls.alu_funct_sel = OP_SLL;
+      SRXI : i_type_controls.alu_funct_sel = instr_funct7_bit5_i ? OP_SRA : OP_SRL;
+      SLTI : i_type_controls.alu_funct_sel = OP_SLT;
+      SLTIU: i_type_controls.alu_funct_sel = OP_SLTU;
+      XORI : i_type_controls.alu_funct_sel = OP_XOR;
+
       LB: begin
         i_type_controls.data_req       = 1'b1;
         i_type_controls.data_byte      = BYTE;
@@ -110,10 +111,10 @@ module yarp_control
     s_type_controls.data_wr  = 1'b1;
     s_type_controls.op2_sel  = 1'b1;
     case (instr_funct3_i)
-      SB:      s_type_controls.data_byte = BYTE;
-      SH:      s_type_controls.data_byte = HALF_WORD;
-      SW:      s_type_controls.data_byte = WORD;
-      default: s_type_controls = '0;
+      SB     : s_type_controls.data_byte = BYTE;
+      SH     : s_type_controls.data_byte = HALF_WORD;
+      SW     : s_type_controls.data_byte = WORD;
+      default: s_type_controls           = '0;
     endcase
   end
 
@@ -130,9 +131,9 @@ module yarp_control
     u_type_controls          = '0;
     u_type_controls.rf_wr_en = 1'b1;
     case (instr_opcode_i)
-      AUIPC:   {u_type_controls.op2_sel, u_type_controls.op1_sel} = {1'b1, 1'b1};
-      LUI:     u_type_controls.rf_wr_data_sel = IMM;
-      default: u_type_controls = '0;
+      AUIPC  : {u_type_controls.op2_sel, u_type_controls.op1_sel} = {1'b1, 1'b1};
+      LUI    : u_type_controls.rf_wr_data_sel                     = IMM;
+      default: u_type_controls                                    = '0;
     endcase
   end
 
@@ -155,7 +156,7 @@ module yarp_control
       is_b_type_i: controls_o = b_type_controls;
       is_u_type_i: controls_o = u_type_controls;
       is_j_type_i: controls_o = j_type_controls;
-      default:     controls_o = '0;
+      default    : controls_o = '0;
     endcase
   end
 

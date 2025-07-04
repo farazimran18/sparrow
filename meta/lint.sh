@@ -1,15 +1,10 @@
 #!/bin/zsh
 
-bender script flist > filelist.f
-
 echo "\n2. Running Verilator lint..."
-verilator --lint-only -Wall -f filelist.f
+verilator --lint-only -Wall -f tb/filelist.f
 
 echo "\n3. Running Verible syntax check..."
-cat filelist.f | xargs verible-verilog-syntax
+cat tb/filelist.f | xargs verible-verilog-syntax
 
 echo "\n4. Running Verible lint..."
-cat filelist.f | xargs verible-verilog-lint
-
-rm filelist.f
-rm Bender.lock
+cat tb/filelist.f | xargs verible-verilog-lint

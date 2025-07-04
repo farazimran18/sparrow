@@ -1,6 +1,6 @@
 module yarp_data_mem
   import yarp_pkg::*;
-(
+  (
     // Data request from current instruction
     input  logic                    data_req_i,
     input  logic             [31:0] data_addr_i,
@@ -17,8 +17,8 @@ module yarp_data_mem
     output logic [ 1:0] data_mem_byte_en_o,
     output logic        data_mem_wr_o,
     output logic [31:0] data_mem_wr_data_o,
-    input  logic [31:0] mem_rd_data_i        // Read data from memory
-);
+    input  logic [31:0] mem_rd_data_i      // Read data from memory
+  );
 
   assign data_mem_req_o     = data_req_i;
   assign data_mem_addr_o    = data_addr_i;
@@ -30,15 +30,15 @@ module yarp_data_mem
     unique case (data_byte_en_i)
       BYTE: begin
         data_mem_rd_data_o = data_zero_extnd_i ?
-                             {24'h0, mem_rd_data_i[7:0]} :
-                             {{24{mem_rd_data_i[7]}}, mem_rd_data_i[7:0]};
+          {24'h0, mem_rd_data_i[7:0]} :
+          {{24{mem_rd_data_i[7]}}, mem_rd_data_i[7:0]};
       end
       HALF_WORD: begin
         data_mem_rd_data_o = data_zero_extnd_i ?
-                             {16'h0, mem_rd_data_i[15:0]} :
-                             {{16{mem_rd_data_i[15]}}, mem_rd_data_i[15:0]};
+          {16'h0, mem_rd_data_i[15:0]} :
+          {{16{mem_rd_data_i[15]}}, mem_rd_data_i[15:0]};
       end
-      WORD:    data_mem_rd_data_o = mem_rd_data_i;
+      WORD   : data_mem_rd_data_o = mem_rd_data_i;
       default: data_mem_rd_data_o = '0;
     endcase
   end

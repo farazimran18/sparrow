@@ -1,7 +1,7 @@
 // 2 read ports, 1 write port
 module yarp_regfile
   import yarp_pkg::*;
-(
+  (
     input logic clk,
     input logic reset_n,
 
@@ -14,10 +14,10 @@ module yarp_regfile
     input logic [ 4:0] rd_addr_i,
     input logic        wr_en_i,
     input logic [31:0] wr_data_i
-);
+  );
 
   logic [31:0][31:0] regfile_d, regfile_q;
-  logic [31:0] regfile_en;
+  logic [31:0]       regfile_en;
 
   generate
     for (genvar i = 0; i < 32; i++) begin : g_registers
@@ -31,7 +31,7 @@ module yarp_regfile
       end
 
       // register X0 is not writable
-      assign regfile_en[i] = (i == '0) ? '0 : (wr_en_i & (i == rd_addr_i));
+      assign regfile_en[i] = (i == '0) ? '0            : (wr_en_i & (i == rd_addr_i));
       assign regfile_d[i]  = regfile_en[i] ? wr_data_i : regfile_q[i];
 
     end

@@ -4,7 +4,7 @@ SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 
 VERILOG_SOURCES =
-COMPILE_ARGS += -f tb_yarp.f
+COMPILE_ARGS += -f filelist.f
 
 # enable waveform dumping
 WAVES = 1
@@ -20,11 +20,11 @@ include $(shell cocotb-config --makefiles)/Makefile.sim
 
 .PHONY: filelist
 filelist:
-	bender script flist > tb_yarp.f
+	bender script flist > filelist.f
 
 # make clean
 clean::
 	$(RM) -r __pycache__
 	$(RM) results.xml
-	$(RM) tb_yarp.f
 	$(RM) ../Bender.lock
+	$(RM) ../*.log

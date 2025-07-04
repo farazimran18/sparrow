@@ -1,6 +1,6 @@
 module yarp_decode
   import yarp_pkg::*;
-(
+  (
     input logic [31:0] instr_i,
 
     output logic [ 4:0] rs1_o,
@@ -17,10 +17,10 @@ module yarp_decode
     output logic b_type_instr_o,
     output logic u_type_instr_o,
     output logic j_type_instr_o
-);
+  );
 
   riscv_op_e opcode;
-  assign opcode   = riscv_op_e'(instr_i[6:0]);
+  assign opcode = riscv_op_e'(instr_i[6:0]);
 
   assign rs1_o    = instr_i[19:15];
   assign rs2_o    = instr_i[24:20];

@@ -99,16 +99,16 @@ package yarp_pkg;
 
   // Control signals
   typedef struct packed {
-    logic             data_req;
-    logic             data_wr;
+    logic data_req;
+    logic data_wr;
     mem_access_size_e data_byte;
-    logic             zero_extnd;
-    logic             rf_wr_en;
-    logic             pc_sel;
-    logic             op1_sel;
-    logic             op2_sel;
-    rf_wr_data_src_e  rf_wr_data_sel;
-    alu_op_e          alu_funct_sel;
+    logic zero_extnd;
+    logic rf_wr_en;
+    logic pc_sel;
+    logic op1_sel;
+    logic op2_sel;
+    rf_wr_data_src_e rf_wr_data_sel;
+    alu_op_e alu_funct_sel;
   } control_t;
 
 endpackage

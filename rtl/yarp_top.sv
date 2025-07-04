@@ -1,8 +1,8 @@
 module yarp_top
   import yarp_pkg::*;
-#(
+  #(
     parameter int RESET_PC = 32'h1000
-) (
+  ) (
     input logic clk,
     input logic reset_n,
 
@@ -18,7 +18,7 @@ module yarp_top
     output logic        data_mem_wr_o,
     output logic [31:0] data_mem_wr_data_o,
     input  logic [31:0] data_mem_rd_data_i
-);
+  );
 
   // Internal signals
   logic     [31:0] imem_dec_instr;
@@ -72,103 +72,100 @@ module yarp_top
 
   // Instruction Memory
   yarp_instr_mem u_yarp_instr_mem (
-      .clk              (clk),
-      .reset_n          (reset_n),
-      .instr_mem_pc_i   (pc_q),
-      .instr_mem_req_o  (instr_mem_req_o),
-      .instr_mem_addr_o (instr_mem_addr_o),
-      .mem_rd_data_i    (instr_mem_rd_data_i),
-      .instr_mem_instr_o(imem_dec_instr)
+    .clk              (clk                ),
+    .reset_n          (reset_n            ),
+    .instr_mem_pc_i   (pc_q               ),
+    .instr_mem_req_o  (instr_mem_req_o    ),
+    .instr_mem_addr_o (instr_mem_addr_o   ),
+    .mem_rd_data_i    (instr_mem_rd_data_i),
+    .instr_mem_instr_o(imem_dec_instr     )
   );
 
   // Instruction Decode
   yarp_decode u_yarp_decode (
-      .instr_i       (imem_dec_instr),
-      .rs1_o         (dec_rf_rs1),
-      .rs2_o         (dec_rf_rs2),
-      .rd_o          (dec_rf_rd),
-      .op_o          (dec_ctl_opcode),
-      .funct3_o      (dec_ctl_funct3),
-      .funct7_o      (dec_ctl_funct7),
-      .r_type_instr_o(r_type_instr),
-      .i_type_instr_o(i_type_instr),
-      .s_type_instr_o(s_type_instr),
-      .b_type_instr_o(b_type_instr),
-      .u_type_instr_o(u_type_instr),
-      .j_type_instr_o(j_type_instr),
-      .instr_imm_o   (dec_instr_imm)
+    .instr_i       (imem_dec_instr),
+    .rs1_o         (dec_rf_rs1    ),
+    .rs2_o         (dec_rf_rs2    ),
+    .rd_o          (dec_rf_rd     ),
+    .op_o          (dec_ctl_opcode),
+    .funct3_o      (dec_ctl_funct3),
+    .funct7_o      (dec_ctl_funct7),
+    .r_type_instr_o(r_type_instr  ),
+    .i_type_instr_o(i_type_instr  ),
+    .s_type_instr_o(s_type_instr  ),
+    .b_type_instr_o(b_type_instr  ),
+    .u_type_instr_o(u_type_instr  ),
+    .j_type_instr_o(j_type_instr  ),
+    .instr_imm_o   (dec_instr_imm )
   );
 
   // Register File
-
-  // Register File write data
   assign rf_wr_data = (control_signals.rf_wr_data_sel == ALU) ? ex_alu_res :
-                      (control_signals.rf_wr_data_sel == MEM) ? data_mem_rd_data :
-                      (control_signals.rf_wr_data_sel == IMM) ? dec_instr_imm :
-                                                                nxt_seq_pc;
+    (control_signals.rf_wr_data_sel == MEM) ? data_mem_rd_data :
+    (control_signals.rf_wr_data_sel == IMM) ? dec_instr_imm    :
+    nxt_seq_pc;
   yarp_regfile u_yarp_regfile (
-      .clk       (clk),
-      .reset_n   (reset_n),
-      .rs1_addr_i(dec_rf_rs1),
-      .rs2_addr_i(dec_rf_rs2),
-      .rd_addr_i (dec_rf_rd),
-      .wr_en_i   (control_signals.rf_wr_en),
-      .wr_data_i (rf_wr_data),
-      .rs1_data_o(rf_rs1_data),
-      .rs2_data_o(rf_rs2_data)
+    .clk       (clk                     ),
+    .reset_n   (reset_n                 ),
+    .rs1_addr_i(dec_rf_rs1              ),
+    .rs2_addr_i(dec_rf_rs2              ),
+    .rd_addr_i (dec_rf_rd               ),
+    .wr_en_i   (control_signals.rf_wr_en),
+    .wr_data_i (rf_wr_data              ),
+    .rs1_data_o(rf_rs1_data             ),
+    .rs2_data_o(rf_rs2_data             )
   );
 
   // Control Unit
   yarp_control u_yarp_control (
-      .instr_funct3_i     (dec_ctl_funct3),
-      .instr_funct7_bit5_i(dec_ctl_funct7[5]),
-      .instr_opcode_i     (dec_ctl_opcode),
-      .is_r_type_i        (r_type_instr),
-      .is_i_type_i        (i_type_instr),
-      .is_s_type_i        (s_type_instr),
-      .is_b_type_i        (b_type_instr),
-      .is_u_type_i        (u_type_instr),
-      .is_j_type_i        (j_type_instr),
-      .controls_o         (control_signals)
+    .instr_funct3_i     (dec_ctl_funct3   ),
+    .instr_funct7_bit5_i(dec_ctl_funct7[5]),
+    .instr_opcode_i     (dec_ctl_opcode   ),
+    .is_r_type_i        (r_type_instr     ),
+    .is_i_type_i        (i_type_instr     ),
+    .is_s_type_i        (s_type_instr     ),
+    .is_b_type_i        (b_type_instr     ),
+    .is_u_type_i        (u_type_instr     ),
+    .is_j_type_i        (j_type_instr     ),
+    .controls_o         (control_signals  )
   );
 
   // Branch Control
   yarp_branch_control u_yarp_branch_control (
-      .opr_a_i          (rf_rs1_data),
-      .opr_b_i          (rf_rs2_data),
-      .is_b_type_ctl_i  (b_type_instr),
-      .instr_func3_ctl_i(dec_ctl_funct3),
-      .branch_taken_o   (branch_taken)
+    .opr_a_i          (rf_rs1_data              ),
+    .opr_b_i          (rf_rs2_data              ),
+    .is_b_type_ctl_i  (b_type_instr             ),
+    .instr_func3_ctl_i(b_type_e'(dec_ctl_funct3)),
+    .branch_taken_o   (branch_taken             )
   );
 
-  // Execute Unit
-
   // ALU operand mux
-  assign alu_opr_a = control_signals.op1_sel ? pc_q : rf_rs1_data;
+  assign alu_opr_a = control_signals.op1_sel ? pc_q          : rf_rs1_data;
   assign alu_opr_b = control_signals.op2_sel ? dec_instr_imm : rf_rs2_data;
 
+  // Execute Unit
   yarp_execute u_yarp_execute (
-      .opr_a_i  (alu_opr_a),
-      .opr_b_i  (alu_opr_b),
-      .op_sel_i (control_signals.alu_funct_sel),
-      .alu_res_o(ex_alu_res)
+    .opr_a_i  (alu_opr_a                    ),
+    .opr_b_i  (alu_opr_b                    ),
+    .op_sel_i (control_signals.alu_funct_sel),
+    .alu_res_o(ex_alu_res                   )
   );
 
   // Data Memory
   yarp_data_mem u_yarp_data_mem (
-      .data_req_i        (control_signals.data_req),
-      .data_addr_i       (ex_alu_res),
-      .data_byte_en_i    (control_signals.data_byte),
-      .data_wr_i         (control_signals.data_wr),
-      .data_wr_data_i    (rf_rs2_data),
-      .data_zero_extnd_i (control_signals.zero_extnd),
-      .data_mem_req_o    (data_mem_req_o),
-      .data_mem_addr_o   (data_mem_addr_o),
-      .data_mem_byte_en_o(data_mem_byte_en_o),
-      .data_mem_wr_o     (data_mem_wr_o),
-      .data_mem_wr_data_o(data_mem_wr_data_o),
-      .mem_rd_data_i     (data_mem_rd_data_i),
-      .data_mem_rd_data_o(data_mem_rd_data)
+    .data_req_i        (control_signals.data_req  ),
+    .data_addr_i       (ex_alu_res                ),
+    .data_byte_en_i    (control_signals.data_byte ),
+    .data_wr_i         (control_signals.data_wr   ),
+    .data_wr_data_i    (rf_rs2_data               ),
+    .data_zero_extnd_i (control_signals.zero_extnd),
+    .data_mem_req_o    (data_mem_req_o            ),
+    .data_mem_addr_o   (data_mem_addr_o           ),
+    .data_mem_byte_en_o(data_mem_byte_en_o        ),
+    .data_mem_wr_o     (data_mem_wr_o             ),
+    .data_mem_wr_data_o(data_mem_wr_data_o        ),
+    .mem_rd_data_i     (data_mem_rd_data_i        ),
+    .data_mem_rd_data_o(data_mem_rd_data          )
   );
 
 endmodule
