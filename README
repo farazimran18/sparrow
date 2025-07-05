@@ -1,4 +1,4 @@
-From Quicksilicon's RISCV course
+single cycle RV32E core
 
 To format code:
 ./meta/format.sh
