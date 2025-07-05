@@ -87,13 +87,13 @@ module sparrow_top
   sparrow_decode u_sparrow_decode (
     .i_instr (imem_dec_instr),
 
-    .o_rs1       (dec_rf_rs1    ),
-    .o_rs2       (dec_rf_rs2    ),
-    .o_rd        (dec_rf_rd     ),
-    .o_opcode    (dec_ctl_opcode),
-    .o_funct3    (dec_ctl_funct3),
-    .o_funct7    (dec_ctl_funct7),
-    .o_instr_imm (dec_instr_imm ),
+    .o_rs1       (dec_rf_rs1     ),
+    .o_rs2       (dec_rf_rs2     ),
+    .o_rd        (dec_rf_rd      ),
+    .o_opcode    (dec_ctl_opcode ),
+    .o_funct3    (dec_ctl_funct3 ),
+    .o_funct7    (dec_ctl_funct7 ),
+    .o_instr_imm (dec_instr_imm  ),
 
     .o_instr_r_type(r_type_instr ),
     .o_instr_i_type(i_type_instr ),
@@ -118,23 +118,25 @@ module sparrow_top
     .i_rd2_addr (dec_rf_rs2  ),
     .o_rd2_data (rf_rs2_data ),
 
-    .i_wr_en   (control_signals.rf_wr_en),
-    .i_wr_addr (dec_rf_rd               ),
-    .i_wr_data (rf_wr_data              )
+    .i_wr_en   (control_signals.rf_wr_en ),
+    .i_wr_addr (dec_rf_rd                ),
+    .i_wr_data (rf_wr_data               )
   );
 
   // Control Unit
   sparrow_control u_sparrow_control (
-    .instr_funct3_i     (dec_ctl_funct3   ),
-    .instr_funct7_bit5_i(dec_ctl_funct7[5]),
-    .instr_opcode_i     (dec_ctl_opcode   ),
-    .is_r_type_i        (r_type_instr     ),
-    .is_i_type_i        (i_type_instr     ),
-    .is_s_type_i        (s_type_instr     ),
-    .is_b_type_i        (b_type_instr     ),
-    .is_u_type_i        (u_type_instr     ),
-    .is_j_type_i        (j_type_instr     ),
-    .controls_o         (control_signals  )
+    .i_instr_r_type (r_type_instr ),
+    .i_instr_i_type (i_type_instr ),
+    .i_instr_s_type (s_type_instr ),
+    .i_instr_b_type (b_type_instr ),
+    .i_instr_u_type (u_type_instr ),
+    .i_instr_j_type (j_type_instr ),
+
+    .i_instr_opcode (dec_ctl_opcode ),
+    .i_instr_funct3 (dec_ctl_funct3 ),
+    .i_instr_funct7 (dec_ctl_funct7 ),
+
+    .o_controls (control_signals )
   );
 
   // Branch Control
@@ -154,22 +156,22 @@ module sparrow_top
 
   // Execute Unit
   sparrow_execute u_sparrow_execute (
-    .i_opr_a (alu_opr_a                    ),
-    .i_opr_b (alu_opr_b                    ),
-    .i_op    (control_signals.alu_funct_sel),
+    .i_opr_a (alu_opr_a             ),
+    .i_opr_b (alu_opr_b             ),
+    .i_op    (control_signals.alu_op),
 
     .o_result(ex_alu_res )
   );
 
   // Data Memory
   sparrow_dmem_intf u_sparrow_dmem_intf (
-    .i_instr_req         (control_signals.data_req  ),
-    .i_instr_addr        (ex_alu_res                ),
-    .i_instr_byte_en     (control_signals.data_byte ),
-    .i_instr_wr_en       (control_signals.data_wr   ),
-    .i_instr_wr_data     (rf_rs2_data               ),
-    .o_instr_rd_data     (data_mem_rd_data          ),
-    .i_instr_zero_extend (control_signals.zero_extnd),
+    .i_instr_req         (control_signals.dmem_req         ),
+    .i_instr_addr        (ex_alu_res                       ),
+    .i_instr_byte_en     (control_signals.dmem_byte_en     ),
+    .i_instr_wr_en       (control_signals.dmem_wr_en       ),
+    .i_instr_wr_data     (rf_rs2_data                      ),
+    .o_instr_rd_data     (data_mem_rd_data                 ),
+    .i_instr_zero_extend (control_signals.dmem_zero_extend ),
 
     .o_dmem_req     (data_mem_req_o     ),
     .o_dmem_addr    (data_mem_addr_o    ),
