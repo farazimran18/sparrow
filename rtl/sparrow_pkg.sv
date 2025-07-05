@@ -71,14 +71,14 @@ package sparrow_pkg;
     SW = 3'h2
   } s_type_e;
 
-  // B Type
+  // b type - {funct3[2:0]}
   typedef enum logic [2:0] {
-    BEQ  = 3'h0,
-    BNE  = 3'h1,
-    BLT  = 3'h4,
-    BGE  = 3'h5,
-    BLTU = 3'h6,
-    BGEU = 3'h7
+    BEQ  = 3'h0, // branch if =
+    BNE  = 3'h1, // branch if ≠
+    BLT  = 3'h4, // branch if <
+    BGE  = 3'h5, // branch if ≥
+    BLTU = 3'h6, // branch if < unsigned
+    BGEU = 3'h7  // branch if ≥ unsigned
   } b_type_e;
 
   // U Type

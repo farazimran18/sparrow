@@ -139,11 +139,13 @@ module sparrow_top
 
   // Branch Control
   sparrow_branch_control u_sparrow_branch_control (
-    .opr_a_i          (rf_rs1_data              ),
-    .opr_b_i          (rf_rs2_data              ),
-    .is_b_type_ctl_i  (b_type_instr             ),
-    .instr_func3_ctl_i(b_type_e'(dec_ctl_funct3)),
-    .branch_taken_o   (branch_taken             )
+    .i_opr_a (rf_rs1_data ),
+    .i_opr_b (rf_rs2_data ),
+
+    .i_instr_b_type (b_type_instr             ),
+    .i_instr_funct3 (b_type_e'(dec_ctl_funct3)),
+
+    .o_branch_taken (branch_taken )
   );
 
   // ALU operand mux

@@ -1,37 +1,28 @@
 module sparrow_branch_control
   import sparrow_pkg::*;
   (
-    // Source operands
-    input logic [31:0] opr_a_i,
-    input logic [31:0] opr_b_i,
+    input logic [31:0] i_opr_a,
+    input logic [31:0] i_opr_b,
 
-    // Branch Type
-    input logic    is_b_type_ctl_i,
-    input b_type_e instr_func3_ctl_i,
+    input logic    i_instr_b_type,
+    input b_type_e i_instr_funct3,
 
-    // Branch outcome
-    output logic branch_taken_o
+    output logic o_branch_taken
   );
 
-  // Internal signals
-  logic [31:0] twos_compl_a;
-  logic [31:0] twos_compl_b;
-
-  assign twos_compl_a = opr_a_i[31] ? ~opr_a_i + 32'h1 : opr_a_i;
-  assign twos_compl_b = opr_b_i[31] ? ~opr_b_i + 32'h1 : opr_b_i;
-
   always_comb begin
-    branch_taken_o = '0;
+    o_branch_taken = '0;
 
-    if (is_b_type_ctl_i) begin
-      case (instr_func3_ctl_i)
-        BEQ    : branch_taken_o = (opr_a_i == opr_b_i);
-        BNE    : branch_taken_o = (opr_a_i != opr_b_i);
-        BLT    : branch_taken_o = (twos_compl_a < twos_compl_b);
-        BGE    : branch_taken_o = (twos_compl_a >= twos_compl_b);
-        BLTU   : branch_taken_o = (opr_a_i < opr_b_i);
-        BGEU   : branch_taken_o = (opr_a_i >= opr_b_i);
-        default: branch_taken_o = 1'b0;
+    if (i_instr_b_type) begin
+      unique case (i_instr_funct3)
+        BEQ  : o_branch_taken = (i_opr_a == i_opr_b);
+        BNE  : o_branch_taken = (i_opr_a != i_opr_b);
+        BLT  : o_branch_taken = ($signed(i_opr_a) < $signed(i_opr_b));
+        BGE  : o_branch_taken = ($signed(i_opr_a) >= $signed(i_opr_b));
+        BLTU : o_branch_taken = (i_opr_a < i_opr_b);
+        BGEU : o_branch_taken = (i_opr_a >= i_opr_b);
+
+        default: o_branch_taken = 1'b0;
       endcase
     end
   end
