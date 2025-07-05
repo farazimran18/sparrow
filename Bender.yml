@@ -9,7 +9,7 @@ sources:
   - rtl/sparrow_data_mem.sv
   - rtl/sparrow_decode.sv
   - rtl/sparrow_execute.sv
-  - rtl/sparrow_instr_mem.sv
+  - rtl/sparrow_imem_intf.sv
   - rtl/sparrow_regfile.sv
   - rtl/sparrow_top.sv
   - tb/tb_sparrow_top.sv

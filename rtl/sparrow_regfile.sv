@@ -2,18 +2,18 @@
 module sparrow_regfile
   import sparrow_pkg::*;
   (
-    input logic clk,
-    input logic reset_n,
+    input logic i_clk,
+    input logic i_reset_n,
 
-    input  logic [ 4:0] rs1_addr_i,
-    output logic [31:0] rs1_data_o,
+    input  logic [ 4:0] i_rd1_addr,
+    output logic [31:0] o_rd1_data,
 
-    input  logic [ 4:0] rs2_addr_i,
-    output logic [31:0] rs2_data_o,
+    input  logic [ 4:0] i_rd2_addr,
+    output logic [31:0] o_rd2_data,
 
-    input logic [ 4:0] rd_addr_i,
-    input logic        wr_en_i,
-    input logic [31:0] wr_data_i
+    input logic        i_wr_en,
+    input logic [ 4:0] i_wr_addr,
+    input logic [31:0] i_wr_data
   );
 
   logic [31:0][31:0] regfile_d, regfile_q;
@@ -22,8 +22,8 @@ module sparrow_regfile
   generate
     for (genvar i = 0; i < 32; i++) begin : g_registers
 
-      always_ff @(posedge clk or negedge reset_n) begin
-        if (!reset_n) begin
+      always_ff @(posedge i_clk or negedge i_reset_n) begin
+        if (!i_reset_n) begin
           regfile_q[i] <= '0;
         end else begin
           regfile_q[i] <= regfile_d[i];
@@ -31,13 +31,13 @@ module sparrow_regfile
       end
 
       // register X0 is not writable
-      assign regfile_en[i] = (i == '0) ? '0            : (wr_en_i & (i == rd_addr_i));
-      assign regfile_d[i]  = regfile_en[i] ? wr_data_i : regfile_q[i];
+      assign regfile_en[i] = (i == '0)     ? '0        : (i_wr_en & (i == i_wr_addr));
+      assign regfile_d[i]  = regfile_en[i] ? i_wr_data : regfile_q[i];
 
     end
   endgenerate
 
-  assign rs1_data_o = regfile_q[rs1_addr_i];
-  assign rs2_data_o = regfile_q[rs2_addr_i];
+  assign o_rd1_data = regfile_q[i_rd1_addr];
+  assign o_rd2_data = regfile_q[i_rd2_addr];
 
 endmodule
