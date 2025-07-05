@@ -1,5 +1,5 @@
-module yarp_branch_control
-  import yarp_pkg::*;
+module sparrow_branch_control
+  import sparrow_pkg::*;
   (
     // Source operands
     input logic [31:0] opr_a_i,

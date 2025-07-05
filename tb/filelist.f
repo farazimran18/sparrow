@@ -1,11 +1,11 @@
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_pkg.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_branch_control.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_control.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_data_mem.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_decode.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_execute.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_instr_mem.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_regfile.sv
-/Users/farazimran/Documents/hardware/sparrow/rtl/yarp_top.sv
-/Users/farazimran/Documents/hardware/sparrow/tb/tb_yarp_top.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_pkg.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_branch_control.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_control.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_data_mem.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_decode.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_execute.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_instr_mem.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_regfile.sv
+/Users/farazimran/Documents/hardware/sparrow/rtl/sparrow_top.sv
+/Users/farazimran/Documents/hardware/sparrow/tb/tb_sparrow_top.sv
 

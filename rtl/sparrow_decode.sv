@@ -1,5 +1,5 @@
-module yarp_decode
-  import yarp_pkg::*;
+module sparrow_decode
+  import sparrow_pkg::*;
   (
     input logic [31:0] instr_i,
 

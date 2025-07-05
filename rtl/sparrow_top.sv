@@ -1,5 +1,5 @@
-module yarp_top
-  import yarp_pkg::*;
+module sparrow_top
+  import sparrow_pkg::*;
   #(
     parameter int RESET_PC = 32'h1000
   ) (
@@ -71,7 +71,7 @@ module yarp_top
   end
 
   // Instruction Memory
-  yarp_instr_mem u_yarp_instr_mem (
+  sparrow_instr_mem u_sparrow_instr_mem (
     .clk              (clk                ),
     .reset_n          (reset_n            ),
     .instr_mem_pc_i   (pc_q               ),
@@ -82,7 +82,7 @@ module yarp_top
   );
 
   // Instruction Decode
-  yarp_decode u_yarp_decode (
+  sparrow_decode u_sparrow_decode (
     .instr_i       (imem_dec_instr),
     .rs1_o         (dec_rf_rs1    ),
     .rs2_o         (dec_rf_rs2    ),
@@ -104,7 +104,7 @@ module yarp_top
     (control_signals.rf_wr_data_sel == MEM) ? data_mem_rd_data :
     (control_signals.rf_wr_data_sel == IMM) ? dec_instr_imm    :
     nxt_seq_pc;
-  yarp_regfile u_yarp_regfile (
+  sparrow_regfile u_sparrow_regfile (
     .clk       (clk                     ),
     .reset_n   (reset_n                 ),
     .rs1_addr_i(dec_rf_rs1              ),
@@ -117,7 +117,7 @@ module yarp_top
   );
 
   // Control Unit
-  yarp_control u_yarp_control (
+  sparrow_control u_sparrow_control (
     .instr_funct3_i     (dec_ctl_funct3   ),
     .instr_funct7_bit5_i(dec_ctl_funct7[5]),
     .instr_opcode_i     (dec_ctl_opcode   ),
@@ -131,7 +131,7 @@ module yarp_top
   );
 
   // Branch Control
-  yarp_branch_control u_yarp_branch_control (
+  sparrow_branch_control u_sparrow_branch_control (
     .opr_a_i          (rf_rs1_data              ),
     .opr_b_i          (rf_rs2_data              ),
     .is_b_type_ctl_i  (b_type_instr             ),
@@ -144,7 +144,7 @@ module yarp_top
   assign alu_opr_b = control_signals.op2_sel ? dec_instr_imm : rf_rs2_data;
 
   // Execute Unit
-  yarp_execute u_yarp_execute (
+  sparrow_execute u_sparrow_execute (
     .opr_a_i  (alu_opr_a                    ),
     .opr_b_i  (alu_opr_b                    ),
     .op_sel_i (control_signals.alu_funct_sel),
@@ -152,7 +152,7 @@ module yarp_top
   );
 
   // Data Memory
-  yarp_data_mem u_yarp_data_mem (
+  sparrow_data_mem u_sparrow_data_mem (
     .data_req_i        (control_signals.data_req  ),
     .data_addr_i       (ex_alu_res                ),
     .data_byte_en_i    (control_signals.data_byte ),

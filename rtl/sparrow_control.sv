@@ -1,5 +1,5 @@
-module yarp_control
-  import yarp_pkg::*;
+module sparrow_control
+  import sparrow_pkg::*;
   (
     // Instruction type
     input logic is_r_type_i,

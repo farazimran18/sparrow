@@ -1,5 +1,5 @@
-module yarp_data_mem
-  import yarp_pkg::*;
+module sparrow_data_mem
+  import sparrow_pkg::*;
   (
     // Data request from current instruction
     input  logic                    data_req_i,

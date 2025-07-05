@@ -1,5 +1,5 @@
-module tb_yarp_top
-  import yarp_pkg::*;
+module tb_sparrow_top
+  import sparrow_pkg::*;
   #(
     parameter int RESET_PC = 32'h1000
   ) (
@@ -20,9 +20,9 @@ module tb_yarp_top
     input  logic [31:0] data_mem_rd_data_i
   );
 
-  yarp_top #(
+  sparrow_top #(
     .RESET_PC(RESET_PC)
-  ) u_yarp_top (
+  ) u_sparrow_top (
     .clk    (clk    ),
     .reset_n(reset_n),
 

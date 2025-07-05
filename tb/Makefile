@@ -10,10 +10,10 @@ COMPILE_ARGS += -f filelist.f
 WAVES = 1
 
 # TOPLEVEL is the name of the toplevel module in your Verilog or VHDL file
-TOPLEVEL = tb_yarp_top
+TOPLEVEL = tb_sparrow_top
 
 # MODULE is the basename of the Python test file
-MODULE = test_yarp_top
+MODULE = test_sparrow_top
 
 # include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim

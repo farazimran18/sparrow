@@ -1,6 +1,6 @@
 // 2 read ports, 1 write port
-module yarp_regfile
-  import yarp_pkg::*;
+module sparrow_regfile
+  import sparrow_pkg::*;
   (
     input logic clk,
     input logic reset_n,

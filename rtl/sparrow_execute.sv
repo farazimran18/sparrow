@@ -1,5 +1,5 @@
-module yarp_execute
-  import yarp_pkg::*;
+module sparrow_execute
+  import sparrow_pkg::*;
   (
     input logic [31:0] opr_a_i,
     input logic [31:0] opr_b_i,

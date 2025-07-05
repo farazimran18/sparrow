@@ -1,4 +1,4 @@
-package yarp_pkg;
+package sparrow_pkg;
 
   typedef enum logic [6:0] {
     R_TYPE   = 7'h33,

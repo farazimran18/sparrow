@@ -3,4 +3,4 @@
 +dvt_init
 
 -f tb/filelist.f
--top tb_yarp_top
+-top tb_sparrow_top

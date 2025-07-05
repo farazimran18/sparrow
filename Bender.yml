@@ -1,15 +1,15 @@
 package:
-  name: yarp
+  name: sparrow
   authors: ["Faraz Imran <farazimran18@icloud.com>"]
 
 sources:
-  - rtl/yarp_pkg.sv
-  - rtl/yarp_branch_control.sv
-  - rtl/yarp_control.sv
-  - rtl/yarp_data_mem.sv
-  - rtl/yarp_decode.sv
-  - rtl/yarp_execute.sv
-  - rtl/yarp_instr_mem.sv
-  - rtl/yarp_regfile.sv
-  - rtl/yarp_top.sv
-  - tb/tb_yarp_top.sv
+  - rtl/sparrow_pkg.sv
+  - rtl/sparrow_branch_control.sv
+  - rtl/sparrow_control.sv
+  - rtl/sparrow_data_mem.sv
+  - rtl/sparrow_decode.sv
+  - rtl/sparrow_execute.sv
+  - rtl/sparrow_instr_mem.sv
+  - rtl/sparrow_regfile.sv
+  - rtl/sparrow_top.sv
+  - tb/tb_sparrow_top.sv
