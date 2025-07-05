@@ -71,32 +71,36 @@ module sparrow_top
   end
 
   // Instruction Memory
-  sparrow_instr_mem u_sparrow_instr_mem (
-    .clk              (clk                ),
-    .reset_n          (reset_n            ),
-    .instr_mem_pc_i   (pc_q               ),
-    .instr_mem_req_o  (instr_mem_req_o    ),
-    .instr_mem_addr_o (instr_mem_addr_o   ),
-    .mem_rd_data_i    (instr_mem_rd_data_i),
-    .instr_mem_instr_o(imem_dec_instr     )
+  sparrow_imem_intf u_sparrow_imem_intf (
+    .i_clk     (clk     ),
+    .i_reset_n (reset_n ),
+
+    .i_imem_pc (pc_q           ),
+    .o_instr   (imem_dec_instr ),
+
+    .o_imem_req     (instr_mem_req_o    ),
+    .o_imem_addr    (instr_mem_addr_o   ),
+    .i_imem_rd_data (instr_mem_rd_data_i)
   );
 
   // Instruction Decode
   sparrow_decode u_sparrow_decode (
-    .instr_i       (imem_dec_instr),
-    .rs1_o         (dec_rf_rs1    ),
-    .rs2_o         (dec_rf_rs2    ),
-    .rd_o          (dec_rf_rd     ),
-    .op_o          (dec_ctl_opcode),
-    .funct3_o      (dec_ctl_funct3),
-    .funct7_o      (dec_ctl_funct7),
-    .r_type_instr_o(r_type_instr  ),
-    .i_type_instr_o(i_type_instr  ),
-    .s_type_instr_o(s_type_instr  ),
-    .b_type_instr_o(b_type_instr  ),
-    .u_type_instr_o(u_type_instr  ),
-    .j_type_instr_o(j_type_instr  ),
-    .instr_imm_o   (dec_instr_imm )
+    .i_instr (imem_dec_instr),
+
+    .o_rs1       (dec_rf_rs1    ),
+    .o_rs2       (dec_rf_rs2    ),
+    .o_rd        (dec_rf_rd     ),
+    .o_opcode    (dec_ctl_opcode),
+    .o_funct3    (dec_ctl_funct3),
+    .o_funct7    (dec_ctl_funct7),
+    .o_instr_imm (dec_instr_imm ),
+
+    .o_instr_r_type(r_type_instr ),
+    .o_instr_i_type(i_type_instr ),
+    .o_instr_s_type(s_type_instr ),
+    .o_instr_b_type(b_type_instr ),
+    .o_instr_u_type(u_type_instr ),
+    .o_instr_j_type(j_type_instr )
   );
 
   // Register File
@@ -105,15 +109,18 @@ module sparrow_top
     (control_signals.rf_wr_data_sel == IMM) ? dec_instr_imm    :
     nxt_seq_pc;
   sparrow_regfile u_sparrow_regfile (
-    .clk       (clk                     ),
-    .reset_n   (reset_n                 ),
-    .rs1_addr_i(dec_rf_rs1              ),
-    .rs2_addr_i(dec_rf_rs2              ),
-    .rd_addr_i (dec_rf_rd               ),
-    .wr_en_i   (control_signals.rf_wr_en),
-    .wr_data_i (rf_wr_data              ),
-    .rs1_data_o(rf_rs1_data             ),
-    .rs2_data_o(rf_rs2_data             )
+    .i_clk     (clk     ),
+    .i_reset_n (reset_n ),
+
+    .i_rd1_addr (dec_rf_rs1  ),
+    .o_rd1_data (rf_rs1_data ),
+
+    .i_rd2_addr (dec_rf_rs2  ),
+    .o_rd2_data (rf_rs2_data ),
+
+    .i_wr_en   (control_signals.rf_wr_en),
+    .i_wr_addr (dec_rf_rd               ),
+    .i_wr_data (rf_wr_data              )
   );
 
   // Control Unit
@@ -145,27 +152,29 @@ module sparrow_top
 
   // Execute Unit
   sparrow_execute u_sparrow_execute (
-    .opr_a_i  (alu_opr_a                    ),
-    .opr_b_i  (alu_opr_b                    ),
-    .op_sel_i (control_signals.alu_funct_sel),
-    .alu_res_o(ex_alu_res                   )
+    .i_opr_a (alu_opr_a                    ),
+    .i_opr_b (alu_opr_b                    ),
+    .i_op    (control_signals.alu_funct_sel),
+
+    .o_result(ex_alu_res )
   );
 
   // Data Memory
-  sparrow_data_mem u_sparrow_data_mem (
-    .data_req_i        (control_signals.data_req  ),
-    .data_addr_i       (ex_alu_res                ),
-    .data_byte_en_i    (control_signals.data_byte ),
-    .data_wr_i         (control_signals.data_wr   ),
-    .data_wr_data_i    (rf_rs2_data               ),
-    .data_zero_extnd_i (control_signals.zero_extnd),
-    .data_mem_req_o    (data_mem_req_o            ),
-    .data_mem_addr_o   (data_mem_addr_o           ),
-    .data_mem_byte_en_o(data_mem_byte_en_o        ),
-    .data_mem_wr_o     (data_mem_wr_o             ),
-    .data_mem_wr_data_o(data_mem_wr_data_o        ),
-    .mem_rd_data_i     (data_mem_rd_data_i        ),
-    .data_mem_rd_data_o(data_mem_rd_data          )
+  sparrow_dmem_intf u_sparrow_dmem_intf (
+    .i_instr_req         (control_signals.data_req  ),
+    .i_instr_addr        (ex_alu_res                ),
+    .i_instr_byte_en     (control_signals.data_byte ),
+    .i_instr_wr_en       (control_signals.data_wr   ),
+    .i_instr_wr_data     (rf_rs2_data               ),
+    .o_instr_rd_data     (data_mem_rd_data          ),
+    .i_instr_zero_extend (control_signals.zero_extnd),
+
+    .o_dmem_req     (data_mem_req_o     ),
+    .o_dmem_addr    (data_mem_addr_o    ),
+    .o_dmem_byte_en (data_mem_byte_en_o ),
+    .o_dmem_wr_en   (data_mem_wr_o      ),
+    .o_dmem_wr_data (data_mem_wr_data_o ),
+    .i_dmem_rd_data (data_mem_rd_data_i )
   );
 
 endmodule

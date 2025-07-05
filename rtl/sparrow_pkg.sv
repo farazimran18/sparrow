@@ -13,22 +13,22 @@ package sparrow_pkg;
   } riscv_op_e;
 
   typedef enum logic [3:0] {
-    OP_ADD,
-    OP_SUB,
-    OP_SLL,
-    OP_SRL,
-    OP_SRA,
-    OP_OR,
-    OP_AND,
-    OP_XOR,
-    OP_SLTU,
-    OP_SLT
+    OP_ADD,  // add
+    OP_SUB,  // subtract
+    OP_SLL,  // shift left logical
+    OP_SRL,  // shift right logical
+    OP_SRA,  // shift right arithmetic
+    OP_OR,   // bitwise or
+    OP_AND,  // bitwise and
+    OP_XOR,  // bitwise xor
+    OP_SLTU, // set on less than unsigned
+    OP_SLT   // set on less than
   } alu_op_e;
 
   typedef enum logic [1:0] {
-    BYTE      = 2'b00,
-    HALF_WORD = 2'b01,
-    WORD      = 2'b11
+    BYTE      = 2'b00, // 1 byte
+    HALF_WORD = 2'b01, // 2 bytes
+    WORD      = 2'b11  // 4 bytes
   } mem_access_size_e;
 
   // R Type

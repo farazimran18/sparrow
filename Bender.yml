@@ -6,7 +6,7 @@ sources:
   - rtl/sparrow_pkg.sv
   - rtl/sparrow_branch_control.sv
   - rtl/sparrow_control.sv
-  - rtl/sparrow_data_mem.sv
+  - rtl/sparrow_dmem_intf.sv
   - rtl/sparrow_decode.sv
   - rtl/sparrow_execute.sv
   - rtl/sparrow_imem_intf.sv
