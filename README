@@ -5,3 +5,7 @@ To format code:
 
 To run lint:
 ./meta/lint.sh
+
+To create venv:
+python -m venv .venv
+pip install -r meta/requirements.txt
