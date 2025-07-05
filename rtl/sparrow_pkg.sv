@@ -99,10 +99,10 @@ package sparrow_pkg;
     mem_access_size_e dmem_byte_en;
     logic dmem_zero_extend;
     logic rf_wr_en;
+    rf_wr_data_src_e rf_wr_data_sel;
     logic pc_sel;
     logic op1_sel;
     logic op2_sel;
-    rf_wr_data_src_e rf_wr_data_sel;
     alu_op_e alu_op;
   } control_t;
 
