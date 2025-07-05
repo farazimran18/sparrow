@@ -6,7 +6,7 @@ module sparrow_decode
     output logic      [ 4:0] o_rs1,
     output logic      [ 4:0] o_rs2,
     output logic      [ 4:0] o_rd,
-    output riscv_op_e        o_op,
+    output riscv_op_e        o_opcode,
     output logic      [ 2:0] o_funct3,
     output logic      [ 6:0] o_funct7,
     output logic      [31:0] o_instr_imm,
@@ -22,7 +22,7 @@ module sparrow_decode
   assign o_rs1    = i_instr[19:15];
   assign o_rs2    = i_instr[24:20];
   assign o_rd     = i_instr[11:7];
-  assign o_op     = riscv_op_e'(i_instr[6:0]);
+  assign o_opcode = riscv_op_e'(i_instr[6:0]);
   assign o_funct3 = i_instr[14:12];
   assign o_funct7 = i_instr[31:25];
 
@@ -35,7 +35,7 @@ module sparrow_decode
     o_instr_j_type = '0;
     o_instr_imm    = '0;
 
-    unique case (o_op)
+    unique case (o_opcode)
       R_TYPE: begin
         o_instr_r_type = '1;
       end
