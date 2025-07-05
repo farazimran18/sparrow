@@ -1,0 +1,15 @@
+click==8.2.1
+cocotb==1.9.2
+colorama==0.4.6
+edalize==0.6.1
+find_libpython==0.4.1
+importlib_resources==6.5.2
+Jinja2==3.1.6
+MarkupSafe==3.0.2
+platformdirs==4.3.8
+PyYAML==6.0.2
+vsg==3.32.0
+vunit_hdl==4.7.0
+wasmtime==34.0.0
+yowasp-runtime==1.77
+yowasp-yosys==0.54.0.0.post930
