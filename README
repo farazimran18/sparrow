@@ -1,4 +1,4 @@
-single cycle RV32E core
+single cycle RV32I core
 
 To format code:
 ./meta/format.sh
