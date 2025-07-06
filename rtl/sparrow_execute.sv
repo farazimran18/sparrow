@@ -20,7 +20,6 @@ module sparrow_execute
       OP_XOR:  o_result = i_opr_a ^ i_opr_b;
       OP_SLTU: o_result = {31'h0, i_opr_a < i_opr_b};
       OP_SLT:  o_result = {31'h0, $signed(i_opr_a) < $signed(i_opr_b)};
-
       default: o_result = '0;
     endcase
   end

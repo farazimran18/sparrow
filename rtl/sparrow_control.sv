@@ -31,17 +31,16 @@ module sparrow_control
     unique case (r_type_e'({
       i_instr_funct7[5], i_instr_funct3
     }))
-      ADD:  r_type_controls.alu_op = OP_ADD;
-      AND:  r_type_controls.alu_op = OP_AND;
-      OR:   r_type_controls.alu_op = OP_OR;
-      SLL:  r_type_controls.alu_op = OP_SLL;
-      SLT:  r_type_controls.alu_op = OP_SLT;
-      SLTU: r_type_controls.alu_op = OP_SLTU;
-      SRA:  r_type_controls.alu_op = OP_SRA;
-      SRL:  r_type_controls.alu_op = OP_SRL;
-      SUB:  r_type_controls.alu_op = OP_SUB;
-      XOR:  r_type_controls.alu_op = OP_XOR;
-
+      ADD:     r_type_controls.alu_op = OP_ADD;
+      AND:     r_type_controls.alu_op = OP_AND;
+      OR:      r_type_controls.alu_op = OP_OR;
+      SLL:     r_type_controls.alu_op = OP_SLL;
+      SLT:     r_type_controls.alu_op = OP_SLT;
+      SLTU:    r_type_controls.alu_op = OP_SLTU;
+      SRA:     r_type_controls.alu_op = OP_SRA;
+      SRL:     r_type_controls.alu_op = OP_SRL;
+      SUB:     r_type_controls.alu_op = OP_SUB;
+      XOR:     r_type_controls.alu_op = OP_XOR;
       default: r_type_controls.alu_op = OP_ADD;
     endcase
   end
@@ -97,7 +96,6 @@ module sparrow_control
         i_type_controls.rf_wr_data_sel   = MEM;
         i_type_controls.dmem_zero_extend = 1'b1;
       end
-
       default: i_type_controls = '0;
     endcase
   end
@@ -110,10 +108,9 @@ module sparrow_control
     s_type_controls.alu_op2_sel = 1'b1;
 
     unique case (i_instr_funct3)
-      SB: s_type_controls.dmem_byte_en = BYTE;
-      SH: s_type_controls.dmem_byte_en = HALF_WORD;
-      SW: s_type_controls.dmem_byte_en = WORD;
-
+      SB:      s_type_controls.dmem_byte_en = BYTE;
+      SH:      s_type_controls.dmem_byte_en = HALF_WORD;
+      SW:      s_type_controls.dmem_byte_en = WORD;
       default: s_type_controls = '0;
     endcase
   end
@@ -138,8 +135,7 @@ module sparrow_control
         u_type_controls.alu_op2_sel    = 1'b1;
         u_type_controls.alu_op         = OP_ADD;
       end
-      LUI: u_type_controls.rf_wr_data_sel = IMM;
-
+      LUI:     u_type_controls.rf_wr_data_sel = IMM;
       default: u_type_controls = '0;
     endcase
   end
@@ -164,8 +160,7 @@ module sparrow_control
       i_instr_b_type: o_controls = b_type_controls;
       i_instr_u_type: o_controls = u_type_controls;
       i_instr_j_type: o_controls = j_type_controls;
-
-      default: o_controls = '0;
+      default:        o_controls = '0;
     endcase
   end
 

@@ -59,7 +59,6 @@ module sparrow_decode
         o_instr_j_type = '1;
         o_instr_imm    = {{12{i_instr[31]}}, i_instr[19:12], i_instr[20], i_instr[30:21], 1'b0};
       end
-
       default: ;
     endcase
   end
