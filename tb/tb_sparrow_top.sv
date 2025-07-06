@@ -3,39 +3,39 @@ module tb_sparrow_top
   #(
     parameter int RESET_PC = 32'h1000
   ) (
-    input logic clk,
-    input logic reset_n,
+    input logic i_clk,
+    input logic i_reset_n,
 
-    // Instruction memory interface
-    output logic        instr_mem_req_o,
-    output logic [31:0] instr_mem_addr_o,
-    input  logic [31:0] instr_mem_rd_data_i,
+    // instruction memory interface
+    output logic        o_imem_req,
+    output logic [31:0] o_imem_addr,
+    input  logic [31:0] i_imem_rd_data,
 
-    // Data memory interface
-    output logic        data_mem_req_o,
-    output logic [31:0] data_mem_addr_o,
-    output logic [ 1:0] data_mem_byte_en_o,
-    output logic        data_mem_wr_o,
-    output logic [31:0] data_mem_wr_data_o,
-    input  logic [31:0] data_mem_rd_data_i
+    // data memory interface
+    output logic        o_dmem_req,
+    output logic [31:0] o_dmem_addr,
+    output logic [ 1:0] o_dmem_byte_en,
+    output logic        o_dmem_wr_en,
+    output logic [31:0] o_dmem_wr_data,
+    input  logic [31:0] i_dmem_rd_data
   );
 
   sparrow_top #(
     .RESET_PC(RESET_PC)
   ) u_sparrow_top (
-    .clk    (clk    ),
-    .reset_n(reset_n),
+    .i_clk    (i_clk     ),
+    .i_reset_n(i_reset_n ),
 
-    .instr_mem_req_o    (instr_mem_req_o    ),
-    .instr_mem_addr_o   (instr_mem_addr_o   ),
-    .instr_mem_rd_data_i(instr_mem_rd_data_i),
+    .o_imem_req    (o_imem_req     ),
+    .o_imem_addr   (o_imem_addr    ),
+    .i_imem_rd_data(i_imem_rd_data ),
 
-    .data_mem_req_o    (data_mem_req_o    ),
-    .data_mem_addr_o   (data_mem_addr_o   ),
-    .data_mem_byte_en_o(data_mem_byte_en_o),
-    .data_mem_wr_o     (data_mem_wr_o     ),
-    .data_mem_wr_data_o(data_mem_wr_data_o),
-    .data_mem_rd_data_i(data_mem_rd_data_i)
+    .o_dmem_req    (o_dmem_req     ),
+    .o_dmem_addr   (o_dmem_addr    ),
+    .o_dmem_byte_en(o_dmem_byte_en ),
+    .o_dmem_wr_en  (o_dmem_wr_en   ),
+    .o_dmem_wr_data(o_dmem_wr_data ),
+    .i_dmem_rd_data(i_dmem_rd_data )
   );
 
 endmodule
