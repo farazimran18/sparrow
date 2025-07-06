@@ -1,6 +1,6 @@
 module sparrow_decode
   import sparrow_pkg::*;
-  (
+(
     input logic [31:0] i_instr,
 
     output logic      [ 4:0] o_rs1,
@@ -17,7 +17,7 @@ module sparrow_decode
     output logic o_instr_b_type,
     output logic o_instr_u_type,
     output logic o_instr_j_type
-  );
+);
 
   assign o_rs1    = i_instr[19:15];
   assign o_rs2    = i_instr[24:20];

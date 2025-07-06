@@ -1,6 +1,6 @@
 module sparrow_control
   import sparrow_pkg::*;
-  (
+(
     input logic i_instr_r_type,
     input logic i_instr_i_type,
     input logic i_instr_s_type,
@@ -13,7 +13,7 @@ module sparrow_control
     input logic [6:0] i_instr_funct7,
 
     output control_t o_controls
-  );
+);
 
   control_t r_type_controls;
   control_t i_type_controls;
@@ -28,17 +28,19 @@ module sparrow_control
     r_type_controls.rf_wr_en       = 1'b1;
     r_type_controls.rf_wr_data_sel = ALU;
 
-    unique case (r_type_e'({i_instr_funct7[5], i_instr_funct3}))
-      ADD  : r_type_controls.alu_op = OP_ADD;
-      AND  : r_type_controls.alu_op = OP_AND;
-      OR   : r_type_controls.alu_op = OP_OR;
-      SLL  : r_type_controls.alu_op = OP_SLL;
-      SLT  : r_type_controls.alu_op = OP_SLT;
-      SLTU : r_type_controls.alu_op = OP_SLTU;
-      SRA  : r_type_controls.alu_op = OP_SRA;
-      SRL  : r_type_controls.alu_op = OP_SRL;
-      SUB  : r_type_controls.alu_op = OP_SUB;
-      XOR  : r_type_controls.alu_op = OP_XOR;
+    unique case (r_type_e'({
+      i_instr_funct7[5], i_instr_funct3
+    }))
+      ADD:  r_type_controls.alu_op = OP_ADD;
+      AND:  r_type_controls.alu_op = OP_AND;
+      OR:   r_type_controls.alu_op = OP_OR;
+      SLL:  r_type_controls.alu_op = OP_SLL;
+      SLT:  r_type_controls.alu_op = OP_SLT;
+      SLTU: r_type_controls.alu_op = OP_SLTU;
+      SRA:  r_type_controls.alu_op = OP_SRA;
+      SRL:  r_type_controls.alu_op = OP_SRL;
+      SUB:  r_type_controls.alu_op = OP_SUB;
+      XOR:  r_type_controls.alu_op = OP_XOR;
 
       default: r_type_controls.alu_op = OP_ADD;
     endcase
@@ -50,21 +52,23 @@ module sparrow_control
     i_type_controls.rf_wr_en    = 1'b1;
     i_type_controls.alu_op2_sel = 1'b1;
 
-    unique case (i_type_e'({i_instr_opcode[4], i_instr_funct3}))
-      ADDI : i_type_controls.alu_op = OP_ADD;
-      ANDI : i_type_controls.alu_op = OP_AND;
-      ORI  : i_type_controls.alu_op = OP_OR;
-      SRXI : i_type_controls.alu_op = i_instr_funct7[5] ? OP_SRA : OP_SRL;
-      SLTI : i_type_controls.alu_op = OP_SLT;
+    unique case (i_type_e'({
+      i_instr_opcode[4], i_instr_funct3
+    }))
+      ADDI: i_type_controls.alu_op = OP_ADD;
+      ANDI: i_type_controls.alu_op = OP_AND;
+      ORI: i_type_controls.alu_op = OP_OR;
+      SRXI: i_type_controls.alu_op = i_instr_funct7[5] ? OP_SRA : OP_SRL;
+      SLTI: i_type_controls.alu_op = OP_SLT;
       SLTIU: i_type_controls.alu_op = OP_SLTU;
-      XORI : i_type_controls.alu_op = OP_XOR;
-      SLLI : i_type_controls.alu_op = (i_instr_funct7 == '0) ? OP_SLL : OP_ADD; // OP_ADD is default
+      XORI: i_type_controls.alu_op = OP_XOR;
+      SLLI: i_type_controls.alu_op = (i_instr_funct7 == '0) ? OP_SLL : OP_ADD;  // OP_ADD is default
       LB_JALR: begin
-        if (i_instr_opcode[2]) begin // JALR
+        if (i_instr_opcode[2]) begin  // JALR
           i_type_controls.rf_wr_data_sel = PC;
           i_type_controls.pc_sel         = 1'b1;
           i_type_controls.alu_op         = OP_ADD;
-        end else begin // LB
+        end else begin  // LB
           i_type_controls.dmem_req       = 1'b1;
           i_type_controls.dmem_byte_en   = BYTE;
           i_type_controls.rf_wr_data_sel = MEM;
@@ -105,10 +109,10 @@ module sparrow_control
     s_type_controls.dmem_wr_en  = 1'b1;
     s_type_controls.alu_op2_sel = 1'b1;
 
-    unique case(i_instr_funct3)
-      SB : s_type_controls.dmem_byte_en = BYTE;
-      SH : s_type_controls.dmem_byte_en = HALF_WORD;
-      SW : s_type_controls.dmem_byte_en = WORD;
+    unique case (i_instr_funct3)
+      SB: s_type_controls.dmem_byte_en = BYTE;
+      SH: s_type_controls.dmem_byte_en = HALF_WORD;
+      SW: s_type_controls.dmem_byte_en = WORD;
 
       default: s_type_controls = '0;
     endcase
@@ -128,13 +132,13 @@ module sparrow_control
     u_type_controls.rf_wr_en = 1'b1;
 
     unique case (i_instr_opcode)
-      AUIPC : begin
+      AUIPC: begin
         u_type_controls.rf_wr_data_sel = ALU;
         u_type_controls.alu_op1_sel    = 1'b1;
         u_type_controls.alu_op2_sel    = 1'b1;
         u_type_controls.alu_op         = OP_ADD;
       end
-      LUI : u_type_controls.rf_wr_data_sel = IMM;
+      LUI: u_type_controls.rf_wr_data_sel = IMM;
 
       default: u_type_controls = '0;
     endcase
@@ -161,7 +165,7 @@ module sparrow_control
       i_instr_u_type: o_controls = u_type_controls;
       i_instr_j_type: o_controls = j_type_controls;
 
-      default : o_controls = '0;
+      default: o_controls = '0;
     endcase
   end
 

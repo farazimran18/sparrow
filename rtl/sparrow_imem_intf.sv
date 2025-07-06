@@ -1,6 +1,6 @@
 module sparrow_imem_intf
   import sparrow_pkg::*;
-  (
+(
     input logic i_clk,
     input logic i_reset_n,
 
@@ -10,7 +10,7 @@ module sparrow_imem_intf
     output logic        o_imem_req,
     output logic [31:0] o_imem_addr,
     input  logic [31:0] i_imem_rd_data
-  );
+);
 
   always_ff @(posedge i_clk or negedge i_reset_n) begin
     if (!i_reset_n) begin
