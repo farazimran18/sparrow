@@ -89,7 +89,7 @@ package sparrow_pkg;
     ALU = 2'b00,
     MEM = 2'b01,
     IMM = 2'b10,
-    PC  = 2'b11
+    PC  = 2'b11 // next PC
   } rf_wr_data_src_e;
 
   // control signals
@@ -99,10 +99,10 @@ package sparrow_pkg;
     mem_access_size_e dmem_byte_en;
     logic dmem_zero_extend;
     logic rf_wr_en;
-    rf_wr_data_src_e rf_wr_data_sel;
-    logic pc_sel;
-    logic op1_sel;
-    logic op2_sel;
+    rf_wr_data_src_e rf_wr_data_sel; // select dest reg data source
+    logic pc_sel;      // select between sequential (PC+4, default) or branch/jump PC source
+    logic alu_op1_sel; // select between current PC and rs1 (default)
+    logic alu_op2_sel; // select between instr immediate and rs2 (default)
     alu_op_e alu_op;
   } control_t;
 

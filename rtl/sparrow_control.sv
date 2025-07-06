@@ -24,8 +24,9 @@ module sparrow_control
 
   // r-type
   always_comb begin
-    r_type_controls          = '0;
-    r_type_controls.rf_wr_en = 1'b1;
+    r_type_controls                = '0;
+    r_type_controls.rf_wr_en       = 1'b1;
+    r_type_controls.rf_wr_data_sel = ALU;
 
     unique case (r_type_e'({i_instr_funct7[5], i_instr_funct3}))
       ADD  : r_type_controls.alu_op = OP_ADD;
@@ -45,24 +46,29 @@ module sparrow_control
 
   // i-type
   always_comb begin
-    i_type_controls          = '0;
-    i_type_controls.rf_wr_en = 1'b1;
-    i_type_controls.op2_sel  = 1'b1;
+    i_type_controls             = '0;
+    i_type_controls.rf_wr_en    = 1'b1;
+    i_type_controls.alu_op2_sel = 1'b1;
 
     unique case (i_type_e'({i_instr_opcode[4], i_instr_funct3}))
       ADDI : i_type_controls.alu_op = OP_ADD;
       ANDI : i_type_controls.alu_op = OP_AND;
       ORI  : i_type_controls.alu_op = OP_OR;
-      SLLI : i_type_controls.alu_op = OP_SLL;
       SRXI : i_type_controls.alu_op = i_instr_funct7[5] ? OP_SRA : OP_SRL;
       SLTI : i_type_controls.alu_op = OP_SLT;
       SLTIU: i_type_controls.alu_op = OP_SLTU;
       XORI : i_type_controls.alu_op = OP_XOR;
-
+      SLLI : i_type_controls.alu_op = (i_instr_funct7 == '0) ? OP_SLL : OP_ADD; // OP_ADD is default
       LB_JALR: begin
-        i_type_controls.dmem_req       = 1'b1;
-        i_type_controls.dmem_byte_en   = BYTE;
-        i_type_controls.rf_wr_data_sel = MEM;
+        if (i_instr_opcode[2]) begin // JALR
+          i_type_controls.rf_wr_data_sel = PC;
+          i_type_controls.pc_sel         = 1'b1;
+          i_type_controls.alu_op         = OP_ADD;
+        end else begin // LB
+          i_type_controls.dmem_req       = 1'b1;
+          i_type_controls.dmem_byte_en   = BYTE;
+          i_type_controls.rf_wr_data_sel = MEM;
+        end
       end
       LH: begin
         i_type_controls.dmem_req       = 1'b1;
@@ -90,21 +96,14 @@ module sparrow_control
 
       default: i_type_controls = '0;
     endcase
-
-    // JALR
-    if ((i_instr_opcode == I_TYPE_2)) begin
-      i_type_controls.rf_wr_data_sel = PC;
-      i_type_controls.pc_sel         = 1'b1;
-      i_type_controls.alu_op         = OP_ADD;
-    end
   end
 
   // s-type
   always_comb begin
-    s_type_controls            = '0;
-    s_type_controls.dmem_req   = 1'b1;
-    s_type_controls.dmem_wr_en = 1'b1;
-    s_type_controls.op2_sel    = 1'b1;
+    s_type_controls             = '0;
+    s_type_controls.dmem_req    = 1'b1;
+    s_type_controls.dmem_wr_en  = 1'b1;
+    s_type_controls.alu_op2_sel = 1'b1;
 
     unique case(i_instr_funct3)
       SB : s_type_controls.dmem_byte_en = BYTE;
@@ -117,10 +116,10 @@ module sparrow_control
 
   // b-type
   always_comb begin
-    b_type_controls         = '0;
-    b_type_controls.alu_op  = OP_ADD;
-    b_type_controls.op1_sel = 1'b1;
-    b_type_controls.op2_sel = 1'b1;
+    b_type_controls             = '0;
+    b_type_controls.alu_op1_sel = 1'b1;
+    b_type_controls.alu_op2_sel = 1'b1;
+    b_type_controls.alu_op      = OP_ADD;
   end
 
   // u-type
@@ -129,21 +128,27 @@ module sparrow_control
     u_type_controls.rf_wr_en = 1'b1;
 
     unique case (i_instr_opcode)
-      AUIPC : {u_type_controls.op2_sel, u_type_controls.op1_sel} = {1'b1, 1'b1};
-      LUI   : u_type_controls.rf_wr_data_sel                     = IMM;
+      AUIPC : begin
+        u_type_controls.rf_wr_data_sel = ALU;
+        u_type_controls.alu_op1_sel    = 1'b1;
+        u_type_controls.alu_op2_sel    = 1'b1;
+        u_type_controls.alu_op         = OP_ADD;
+      end
+      LUI : u_type_controls.rf_wr_data_sel = IMM;
 
       default: u_type_controls = '0;
     endcase
   end
 
-  // j-type
+  // j-type (JAL instruction)
   always_comb begin
     j_type_controls                = '0;
     j_type_controls.rf_wr_en       = 1'b1;
     j_type_controls.rf_wr_data_sel = PC;
-    j_type_controls.op2_sel        = 1'b1;
-    j_type_controls.op1_sel        = 1'b1;
     j_type_controls.pc_sel         = 1'b1;
+    j_type_controls.alu_op1_sel    = 1'b1;
+    j_type_controls.alu_op2_sel    = 1'b1;
+    j_type_controls.alu_op         = OP_ADD;
   end
 
   // output assignments

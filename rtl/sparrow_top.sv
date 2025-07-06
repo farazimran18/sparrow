@@ -73,7 +73,7 @@ module sparrow_top
   end
 
   assign next_seq_pc = current_pc + 32'h4;
-  assign next_pc = (branch_taken | control_signals.pc_sel) ? {alu_result[31:1], 1'b0} : next_seq_pc;
+  assign next_pc     = (branch_taken || control_signals.pc_sel) ? alu_result : next_seq_pc;
 
   // instruction memory interface
   sparrow_imem_intf u_sparrow_imem_intf (
@@ -156,8 +156,8 @@ module sparrow_top
   );
 
   // ALU operand mux
-  assign alu_opr_a = control_signals.op1_sel ? current_pc : regfile_rs1_data;
-  assign alu_opr_b = control_signals.op2_sel ? instr_imm  : regfile_rs2_data;
+  assign alu_opr_a = control_signals.alu_op1_sel ? current_pc : regfile_rs1_data;
+  assign alu_opr_b = control_signals.alu_op2_sel ? instr_imm  : regfile_rs2_data;
 
   // ALU
   sparrow_execute u_sparrow_execute (
