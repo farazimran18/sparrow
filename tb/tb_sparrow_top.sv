@@ -37,14 +37,14 @@ module tb_sparrow_top
   );
 
   // --- flop-based memory model ---
-  localparam int MEM_DEPTH_WORDS = 1024;  // 4kb memory
+  localparam int MemDepthWords = 1024;  // 4kb memory
 
   // instruction memory
-  logic [31:0] imem[MEM_DEPTH_WORDS-1:0];
+  logic [31:0] imem[MemDepthWords-1];
   assign imem_rd_data = imem_req ? imem[imem_addr] : '0;
 
   // data memory
-  logic [31:0] dmem[MEM_DEPTH_WORDS-1:0];
+  logic [31:0] dmem[MemDepthWords-1];
   assign dmem_rd_data = dmem_req ? dmem[dmem_addr] : '0;
 
   logic [31:0] current_word = dmem[dmem_addr];
@@ -60,9 +60,9 @@ module tb_sparrow_top
       new_word = current_word;
 
       // Byte-level write support
-      case (dmem_byte_en)
+      unique case (dmem_byte_en)
         BYTE: begin
-          case (dmem_addr[1:0])
+          unique case (dmem_addr[1:0])
             2'b00: new_word[7:0] = dmem_wr_data[7:0];
             2'b01: new_word[15:8] = dmem_wr_data[7:0];
             2'b10: new_word[23:16] = dmem_wr_data[7:0];
@@ -70,7 +70,7 @@ module tb_sparrow_top
           endcase
         end
         HALF_WORD: begin
-          case (dmem_addr[1:0])
+          unique case (dmem_addr[1:0])
             2'b00:   new_word[15:0] = dmem_wr_data[15:0];
             2'b10:   new_word[31:16] = dmem_wr_data[15:0];
             default: $fatal(1, "Unaligned half-word stores are not supported by RV32I");
